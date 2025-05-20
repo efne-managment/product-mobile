@@ -7,8 +7,8 @@ import {
     StyleSheet,
     View,
 } from "react-native";
-import { Icon } from "@ui-kitten/components";
 import { useThemeContext } from "@/context/ThemeContext";
+import { Icon } from "../icon";
 
 type Status = "default" | "success" | "danger";
 
@@ -59,7 +59,7 @@ const Select = forwardRef<View, Props>(({ options, value, onSelect, disabled, pl
                 ]}
             >
                 <Text style={[styles.label, { color: colors.text, width: '70%'}]}>{selectedLabel}</Text>
-                <Icon name="arrow-ios-downward-outline" fill={colors.text} style={styles.icon} />
+                <Icon iconName="arrowDown" color={colors.text} size={20} />
             </Pressable>
 
             <Modal transparent visible={visible} animationType="fade">

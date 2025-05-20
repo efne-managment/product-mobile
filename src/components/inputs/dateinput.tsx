@@ -2,7 +2,7 @@ import React, { forwardRef, useState } from "react";
 import { Platform, Pressable, StyleSheet, Text, View } from "react-native";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { useThemeContext } from "@/context/ThemeContext";
-import { Icon } from "@ui-kitten/components";
+import { Icon } from "../icon";
 
 type Status = "default" | "success" | "danger";
 
@@ -53,7 +53,7 @@ const DateInput = forwardRef<View, Props>(({
         <Text style={[styles.text, { color: colors.text }]}>
           {formattedDate || placeholder}
         </Text>
-        <Icon name="calendar-outline" fill={colors.text} style={styles.icon} />
+        <Icon iconName="calendar" color={colors.text} size={20} />
       </Pressable>
 
       {show && (

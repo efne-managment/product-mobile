@@ -1,7 +1,7 @@
 import React from "react";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 import { useThemeContext } from "@/context/ThemeContext";
-import { Icon } from "@ui-kitten/components";
+import { Icon } from "../icon";
 
 type Status = "default" | "success" | "danger";
 
@@ -45,7 +45,7 @@ export default function Checkbox({
         ]}
       >
         {checked && (
-          <Icon name="checkmark-outline" fill={colors.textButton} style={styles.icon} />
+          <Icon iconName="checkmark-outline" color={colors.textButton} size={16}/>
         )}
       </View>
       {label && <Text style={[styles.label, { color: colors.text, width: "100%" }]}>{label}</Text>}
@@ -66,10 +66,6 @@ const styles = StyleSheet.create({
     borderWidth: 1.5,
     alignItems: "center",
     justifyContent: "center",
-  },
-  icon: {
-    width: 16,
-    height: 16,
   },
   label: {
     fontSize: 16,

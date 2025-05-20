@@ -5,12 +5,12 @@ import { useRef, useState } from "react";
 import { Formik } from "formik";
 import LoginSchema from "@/validators/loginSchema";
 import { useAuth } from "@/context/AuthContext";
-import { useTheme } from "@ui-kitten/components";
 import { Image } from "expo-image";
 import styles from "./styles";
 import { useAssets } from "expo-asset";
 import { KeyboardAvoidingView, Platform, ScrollView, TextInput } from "react-native";
 import { Button, Checkbox, Input, Layout, Text } from "@/components";
+import { useThemeContext } from "@/context/ThemeContext";
 
 type loginParamsList = NativeStackNavigationProp<RoutesParamList, "Login">;
 
@@ -20,9 +20,9 @@ export default function LoginScreen() {
   const navigation = useNavigation<loginParamsList>();
   const passwordRef = useRef<TextInput>(null);
 
-  const theme = useTheme();
-
-
+  const { getDefaultColors } = useThemeContext();
+  const { colors } = getDefaultColors();
+  
   const onSubmitting = async (value: { username: string, password: string, keepConnected: boolean }) => {
     try {
       await login(value);
@@ -33,7 +33,7 @@ export default function LoginScreen() {
 
   return (
     <KeyboardAvoidingView
-      style={{ flex: 1, backgroundColor: theme['background-basic-color-1'] }}
+      style={{ flex: 1, backgroundColor: colors.background}}
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       keyboardVerticalOffset={Platform.OS === 'ios' ? 64 : 0}
     >

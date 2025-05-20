@@ -103,16 +103,13 @@ export default function AthleteForm({ initialValues, handleSubmit, loading = fal
 
         // ✅ Pegue o primeiro erro com base na ordem dos campos no formulário
         const firstErrorKey = Object.keys(fieldRefs).find((key) => flatErrors[key] !== undefined);
-        console.log(firstErrorKey)
+       
         const ref = firstErrorKey ? fieldRefs[firstErrorKey] : null;
-        console.log(ref)
-
+       
         if (ref?.current && scrollRef.current) {
-            console.log("inside if current refs scroll")
             ref.current.measureLayout(
                 scrollRef.current,
                 (y: number) => {
-                    console.log("y " + y)
                     scrollRef.current?.scrollTo({ y: y - 20, animated: true });
                     ref.current?.focus?.();
                 },
@@ -144,9 +141,7 @@ export default function AthleteForm({ initialValues, handleSubmit, loading = fal
                             const errors = await validateForm();
 
                             if (Object.keys(errors).length > 0) {
-                                Alert.alert("before sendToError")
-                                scrollToError(errors); // 👈 faz scroll até o primeiro campo com erro
-                                console.log("after sendToError")
+                                scrollToError(errors); 
                                 setSubmitting(false);
                                 return;
                             }
@@ -287,9 +282,7 @@ export default function AthleteForm({ initialValues, handleSubmit, loading = fal
                                         ref={bornRef}
                                         value={values.born}
                                         onChange={(date) => {
-                                            console.log("Nova data selecionada:", date);
                                             setFieldValue("born", date);
-                                            console.log("values.born (após set):", values.born);
                                             aditionalInformationRef.current?.focus();
                                         }}
                                         minimumDate={fullMinDate}

@@ -69,7 +69,7 @@ export async function getCategoryFirebase(id: string) {
             return docSnap.data();
         } else {
             // doc.data() will be undefined in this case
-            console.log("No such document!");
+            console.warn("No such document!");
         }
     } catch (e: any) {
         throw new Error(e.message)
@@ -83,7 +83,7 @@ export async function editCategoryFirebase(data: CategoryType, id: string) {
             ...data,
             updatedAt: Date.now().toLocaleString("pt-BR")
         });
-        console.log("Document written with ID: ", id);
+        
     } catch (e: any) {
         throw new Error(e.message)
     }

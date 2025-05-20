@@ -4,8 +4,8 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RoutesParamList } from '@/navigation/AppNavigaton';
 import NoDataScreen from '../default/noData';
 import Loading from '../default/loading';
-import { List } from '@ui-kitten/components';
 import FAB from '@/components/buttons/fab';
+import { FlatList } from 'react-native-gesture-handler';
 
 type listFrequenciesScreenProp = NativeStackNavigationProp<RoutesParamList, "ListFrequencies">;
 
@@ -24,14 +24,13 @@ export default function ListFrequenciesScreen() {
   return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
       <Text>Frequencies Screen</Text>
-       <List
+       <FlatList
               data={frequencies}
               style={{ width: "100%" }}
               renderItem={({ item }) => (
                 <>{JSON.stringify(item)}</>
               )}
             />
-            <FAB iconFill="#fff" iconName="plus" nextRoute="NewFrequency" />
       </View>
   );
 }
