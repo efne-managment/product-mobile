@@ -1,14 +1,14 @@
 import React, { forwardRef, useState } from "react";
 import { Platform, Pressable, StyleSheet, Text, View } from "react-native";
-import DateTimePicker from "@react-native-community/datetimepicker";
+import DateTimePicker, { DateTimePickerEvent } from "@react-native-community/datetimepicker";
 import { useThemeContext } from "@/context/ThemeContext";
 import { Icon } from "../icon";
 
 type Status = "default" | "success" | "danger";
-
 type Props = {
+  name: string;
   value: Date;
-  onChange: (date: Date) => void;
+  setFieldValue: (field: string, value: any, shouldValidate?: boolean) => void;
   placeholder?: string;
   status?: Status;
   minimumDate?: Date;
@@ -16,8 +16,9 @@ type Props = {
 };
 
 const DateInput = forwardRef<View, Props>(({
+  name,
   value,
-  onChange,
+  setFieldValue,
   placeholder = "Selecionar data",
   status = "default",
   minimumDate,
@@ -35,6 +36,13 @@ const DateInput = forwardRef<View, Props>(({
     default: "transparent",
     success: colors.success,
     danger: colors.danger,
+  };
+
+  const onChange = (event: DateTimePickerEvent, selectedDate?: Date) => {
+    setShow(false);
+    if (selectedDate) {
+      setFieldValue(name, selectedDate);
+    }
   };
 
   return (
@@ -60,8 +68,8 @@ const DateInput = forwardRef<View, Props>(({
         <DateTimePicker
           mode="date"
           display={Platform.OS === "ios" ? "spinner" : "inline"}
-          value={value instanceof Date ? value : new Date()}
-          onChange={(date) => onChange(new Date(date.nativeEvent.timestamp))}
+          value={value}
+          onChange={onChange}
           minimumDate={minimumDate}
           maximumDate={maximumDate}
           locale="pt-BR"
@@ -70,6 +78,7 @@ const DateInput = forwardRef<View, Props>(({
     </>
   );
 });
+
 
 DateInput.displayName = "DateInput";
 export default DateInput;
