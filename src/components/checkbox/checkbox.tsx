@@ -45,7 +45,7 @@ export default function Checkbox({
         ]}
       >
         {checked && (
-          <Icon iconName="checkmark-outline" color={colors.textButton} size={16}/>
+          <Icon iconName="check" color={colors.textButton} size={16}/>
         )}
       </View>
       {label && <Text style={[styles.label, { color: colors.text, width: "100%" }]}>{label}</Text>}

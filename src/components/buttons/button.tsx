@@ -15,6 +15,7 @@ export default function Button({
   status = "primary",
   appearance = "default",
   size = "full",
+  style,
   ...rest
 }: Props) {
   const { getDefaultColors } = useThemeContext();
@@ -71,9 +72,10 @@ const buttonSizes = {
   return (
     <Pressable
       {...rest}
-      style={[
+      style={(state) => [
         styles.button,
-        {...selectedSize, backgroundColor, borderColor, borderWidth: appearance === "outline" ? 1 : 0 }
+        { ...selectedSize, backgroundColor, borderColor, borderWidth: appearance === "outline" ? 1 : 0 },
+        typeof style === "function" ? style(state) : style,
       ]}
     >
       <Text style={[styles.title, { color: textColor, width: "100%", textAlign: 'center' }]}>{title}</Text>

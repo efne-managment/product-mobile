@@ -25,8 +25,8 @@ export default function CategoryCard({ data }: Props) {
                 </Text>
                 <Text variant="p"  style={styles.text}>{data.status}</Text>
             </Layout>
-            
-            <Button title="Ver mais" size="small" style={{borderRadius: 20, width: "100%"}} onPress={() => navigation.navigate('DetailsCategory', { category: data})}/>
+
+            <Button title="Ver mais" size="small" style={{width: "100%"}} onPress={() => navigation.navigate('DetailsCategory', { category: data})}/>
         </Layout>
     )
 }

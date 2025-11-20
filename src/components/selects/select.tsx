@@ -1,7 +1,6 @@
 import React, { forwardRef } from "react";
 import {
     Pressable,
-    Text,
     FlatList,
     Modal,
     StyleSheet,
@@ -9,6 +8,7 @@ import {
 } from "react-native";
 import { useThemeContext } from "@/context/ThemeContext";
 import { Icon } from "../icon";
+import { Text } from "../texts";
 
 type Status = "default" | "success" | "danger";
 
@@ -21,12 +21,13 @@ type Props = {
     options: Option[];
     value: string;
     onSelect: (value: string) => void;
+    label: string;
     placeholder?: string;
     status?: Status;
     disabled?: boolean;
 };
 
-const Select = forwardRef<View, Props>(({ options, value, onSelect, disabled, placeholder = "Selecionar...", status = "default" }, ref) => {
+const Select = forwardRef<View, Props>(({ options, value, onSelect, disabled, label, placeholder = "Selecionar...", status = "default" }, ref) => {
     const { getDefaultColors } = useThemeContext();
     const { colors } = getDefaultColors();
 
@@ -44,6 +45,7 @@ const Select = forwardRef<View, Props>(({ options, value, onSelect, disabled, pl
 
     return (
         <>
+            <Text variant="label" style={{ marginBottom: 4, color: colors.text }}>{label}</Text>
             <Pressable
                 ref={ref}
                 onPress={!disabled ? () => setVisible(true) : undefined}
