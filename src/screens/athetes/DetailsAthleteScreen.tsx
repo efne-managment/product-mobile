@@ -6,11 +6,12 @@ import styles from './styles';
 import { Pressable, ScrollView } from 'react-native-gesture-handler';
 import { Image } from 'expo-image';
 import { useCategoriesContext } from '@/context/CategoriesContext';
-import { Linking } from 'react-native';
+import { Linking, ToastAndroid } from 'react-native';
 import ModalOpenPhoto from '../../components/modals/modalOpenPhoto';
 import { Button, FAB, Layout, SectionDivider, Text } from '@/components';
 import { CategoryType } from '@/types/category';
 import { useThemeContext } from '@/context/ThemeContext';
+import { useAthletesContext } from '@/context/AthletesContext';
 
 
 type DetailsCategoryRouteProp = RouteProp<RoutesParamList, "DetailsAthlete">;
@@ -25,6 +26,7 @@ export default function DetailsAthleteScreen() {
   const uriImage = athlete?.photo ? { uri: athlete.photo } : require("../../../assets/person_default.jpg");
   const { getDefaultColors } = useThemeContext();
   const { colors } = getDefaultColors();
+  const {deleteAthlete} = useAthletesContext();
 
   const backgroundColor =  colors.background;
   if (!athlete) {
@@ -37,6 +39,9 @@ export default function DetailsAthleteScreen() {
 
   const [category, getCategory] = React.useState<CategoryType>();
   const [visibleModal, setVisibleModal] = React.useState(false)
+
+    const [isFabMenuOpen, setIsFabMenuOpen] = React.useState(false);
+
   const { getOneCategory } = useCategoriesContext();
 
 
@@ -44,6 +49,16 @@ export default function DetailsAthleteScreen() {
     const categoryData = await getOneCategory(athlete.category);
     getCategory(categoryData);
   }
+
+  const handleDelete = () => {
+
+    setIsFabMenuOpen(false);
+    if (athlete?.id) {
+      deleteAthlete(athlete.id);
+      ToastAndroid.show("Atleta deletado com sucesso!", ToastAndroid.LONG);
+      navigation.goBack();
+    }
+  };
 
 
   React.useEffect(() => {
@@ -98,7 +113,11 @@ export default function DetailsAthleteScreen() {
         <Layout style={styles.row}>
           <Layout style={styles.column}>
             <Text variant="labelBold" style={styles.text}>Categoria</Text>
-            <Text style={styles.text}>{category?.name}</Text>
+            {
+              category ? (<Text style={styles.text}>{category.name}</Text>
+              ) : <Text style={{...styles.text, color: 'red', fontSize: 16}}>Não consta.</Text>
+            }
+           
           </Layout>
           <Layout style={styles.column}>
             <Text variant="labelBold" style={styles.text}>Posição</Text>
@@ -181,8 +200,29 @@ export default function DetailsAthleteScreen() {
       <ModalOpenPhoto setVisible={setVisibleModal} visible={visibleModal} uri={athlete.photo || ""} />
 
         </ScrollView>
+{/* FABs */}
+    {/* Quando o menu estiver aberto, mostra os botões de ação */}
+    {isFabMenuOpen && (
+      <>
+        <FAB iconName='edit' status='success' onPress={() => navigation.replace('EditAthlete', {athlete})} location="bottom-right"     style={{ bottom: 110 }} />
 
-<FAB iconName='edit' onPress={() => navigation.navigate('EditAthlete', {athlete})}/>
+        <FAB
+          iconName="trash"
+          status="danger"
+          onPress={handleDelete}  
+          // location="bottom-right"
+              style={{ bottom: 190 }}  // mais acima ainda
+        />
+      </>
+    )}
+
+    {/* FAB principal (menu) */}
+    <FAB
+      iconName={isFabMenuOpen ? "close" : "settings"}
+      onPress={() => setIsFabMenuOpen((prev) => !prev)}
+      location="bottom-right"
+    />
+  
         </Layout>
   );
 }

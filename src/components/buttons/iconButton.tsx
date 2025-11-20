@@ -3,7 +3,7 @@ import { useThemeContext } from "@/context/ThemeContext";
 import { Icon } from "../icon";
 
 type Props = PressableProps & {
-  iconName: "plus" | "edit" | "trash" | "settings" | "profile";
+  iconName: "plus" | "edit" | "trash" | "settings" | "profile" | "arrow-back" | "arrow-forward" | "check" | "close";
   iconColor: string;
   status?: "primary" | "danger" | "success" | "warning" | "basic";
   appearance?: "default" | "outline" | "ghost";

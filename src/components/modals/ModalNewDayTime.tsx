@@ -139,8 +139,8 @@ export default function ModalNewDayTime({
                             <Text variant="h5" style={{ marginBottom: 16, width: "100%", textAlign: 'center' }}>Novo dia e horário</Text>
                             <Layout style={{ width: "100%", marginVertical: 25 }}>
                                 <Select
+                                    label="Dia da semana"
                                     ref={dayRef}
-                                    placeholder="Dia da semana"
                                     value={day}
                                     options={daysOptions}
                                     status={errors.day ? "danger" : touched.day ? "success" : "default"}
@@ -156,7 +156,7 @@ export default function ModalNewDayTime({
                             <Layout style={{ width: "100%", marginVertical: 25 }}>
                                 <Select
                                     ref={startTimeRef}
-                                    placeholder="Hora de início"
+                                    label="Hora de início"
                                     value={startTime}
                                     options={hourOptions}
                                     status={errors.startTime ? "danger" : touched.startTime ? "success" : "default"}
@@ -173,7 +173,7 @@ export default function ModalNewDayTime({
                             <Layout style={{ width: "100%", marginVertical: 25 }}>
                                 <Select
                                     ref={endTimeRef}
-                                    placeholder="Hora de término"
+                                    label="Hora de término"
                                     value={endTime}
                                     options={hourOptions}
                                     status={errors.endTime ? "danger" : touched.endTime ? "success" : "default"}

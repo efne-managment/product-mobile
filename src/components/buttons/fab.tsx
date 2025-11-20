@@ -3,11 +3,12 @@ import { useThemeContext } from "@/context/ThemeContext";
 import { Icon } from "../icon";
 
 type Props = PressableProps & {
-  iconName: "plus" | "edit" | "trash" | "settings" | "profile";
+  iconName: "plus" | "edit" | "trash" | "settings" | "profile" | "close";
   status?: "primary" | "danger" | "success" | "warning" | "basic";
+  location?: "bottom-right" | "bottom-left" | "top-right" | "top-left";
 };
 
-export default function FAB({ iconName, status = "primary", ...rest }: Props) {
+export default function FAB({ iconName, status = "primary", location = "bottom-right", style, ...rest }: Props) {
   const { getDefaultColors } = useThemeContext();
   const { colors } = getDefaultColors();
 
@@ -20,13 +21,22 @@ export default function FAB({ iconName, status = "primary", ...rest }: Props) {
     basic: colors.grayLight,
   };
 
+  const positionStyles: Record<string, object> = {
+    "bottom-right": { bottom: 30, right: 10 },
+    "bottom-left": { bottom: 30, left: 10 },
+    "top-right": { top: 30, right: 10 },
+    "top-left": { top: 30, left: 10 },
+  };
+
   return (
     <Pressable {...rest}
       style={[
         styles.buttonFAB,
+        positionStyles[location],
         {
           backgroundColor: backgroundMap[status],
         },
+        style,
       ]}
       hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
     >
@@ -39,8 +49,6 @@ const styles = StyleSheet.create({
   buttonFAB: {
     position: "absolute",
     zIndex: 1000,
-    bottom: 20,
-    right: 20,
     width: 70,
     height: 70,
     borderRadius: 35,

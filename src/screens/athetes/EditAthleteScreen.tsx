@@ -48,7 +48,7 @@ export default function EditAthleteScreen() {
       if(athlete.athlete.id){
         await editAthlete(values, athlete.athlete.id);
         ToastAndroid.show("Atleta editado com sucesso!", ToastAndroid.LONG);
-        navigation.navigate('DetailsAthlete', { athlete: values, age: new Date().getFullYear() - new Date(values.born).getFullYear() });
+        navigation.replace('DetailsAthlete', { athlete: values, age: new Date().getFullYear() - new Date(values.born).getFullYear() });
       } else {
         console.error("ID do atleta não encontrado.");
         ToastAndroid.show("Erro ao editar atleta. Tente novamente.", ToastAndroid.LONG);

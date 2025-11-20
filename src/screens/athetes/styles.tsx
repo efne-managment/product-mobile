@@ -24,7 +24,7 @@ const styles = StyleSheet.create({
     containerInput: {
         width: "100%",
         marginVertical: 10,
-        height:80,
+        height: "auto",
         justifyContent: "space-between",
     },
     containerFooter: {
@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
     image: {
         width: 150,
         height: 130,
-        contentFit: "contain",
+        objectFit: "contain",
     },
     row: {
         width: "100%",

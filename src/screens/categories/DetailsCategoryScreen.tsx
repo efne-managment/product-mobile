@@ -5,8 +5,9 @@ import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { Button, FAB, Layout, SectionDivider, Text } from '@/components';
 import { useAthletesContext } from '@/context/AthletesContext';
 import { AthleteType } from '@/types/athlete';
-import { FlatList } from 'react-native';
+import { FlatList, ToastAndroid } from 'react-native';
 import AthleteCard from '@/components/cards/athleteCard';
+import { useCategoriesContext } from '@/context/CategoriesContext';
 
 type DetailsCategoryRouteProp = RouteProp<RoutesParamList, "DetailsCategory">;
 
@@ -18,6 +19,8 @@ export default function DetailsCategoryScreen() {
   const category = route.params.category;
   const { getAthletesByCategory } = useAthletesContext();
   const [athletes, setAthletes] = React.useState<AthleteType[]>([])
+
+  const { deleteCategory } = useCategoriesContext();
 
   if (!category || !category?.id) {
     return (
@@ -33,6 +36,18 @@ export default function DetailsCategoryScreen() {
       setAthletes(result);
     }
   };
+
+    const [isFabMenuOpen, setIsFabMenuOpen] = React.useState(false);
+
+    const handleDelete = () => {
+  
+      setIsFabMenuOpen(false);
+      if (category?.id) {
+        deleteCategory(category.id);
+        ToastAndroid.show("Categoria deletada com sucesso!", ToastAndroid.LONG);
+        navigation.goBack();
+      }
+    };
 
   React.useEffect(() => {
     if (category) {
@@ -90,7 +105,28 @@ export default function DetailsCategoryScreen() {
             style={{ width: "100%", }} /> : <Text variant='h5' status='danger'>Nenhum atleta encontrado nesta categoria.</Text>
         }
       </Layout>
-      <FAB iconName='edit' onPress={() => navigation.navigate('EditCategory', {category})}/>
+      {/* FABs */}
+          {/* Quando o menu estiver aberto, mostra os botões de ação */}
+          {isFabMenuOpen && (
+            <>
+              <FAB iconName='edit' status='success' onPress={() => navigation.replace('EditCategory', {category})} location="bottom-right"     style={{ bottom: 110 }} />
+      
+              <FAB
+                iconName="trash"
+                status="danger"
+                onPress={handleDelete}  
+                // location="bottom-right"
+                    style={{ bottom: 190 }}  // mais acima ainda
+              />
+            </>
+          )}
+      
+          {/* FAB principal (menu) */}
+          <FAB
+            iconName={isFabMenuOpen ? "close" : "settings"}
+            onPress={() => setIsFabMenuOpen((prev) => !prev)}
+            location="bottom-right"
+          />
     </Layout>
   );
 }

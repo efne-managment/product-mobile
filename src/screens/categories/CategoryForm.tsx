@@ -47,7 +47,8 @@ export default function CategoryForm({ initialValues, handleSubmit, loading = fa
             <Layout style={{ ...styles.containerForm }}>
               <Layout style={styles.containerInput}>
                 <Input
-                  placeholder="Nome da categoria"
+                  label="Nome da categoria"
+                  placeholder="Ex. Sub-15 Masculino"
                   returnKeyType="next"
                   autoCapitalize="words"
                   autoCorrect={false}

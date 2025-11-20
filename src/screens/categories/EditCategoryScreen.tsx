@@ -25,7 +25,7 @@ export default function EditCategoryScreen() {
         try {
             await editCategory(values, values.id!);
             setLoading(false)
-            navigation.navigate("DetailsCategory", { category: values });
+            navigation.replace("DetailsCategory", { category: values });
         } catch (error) {
             console.error("Erro ao editar a categoria:", error);
             setLoading(false)

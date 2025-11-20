@@ -192,8 +192,40 @@ function getStoragePathFromUrl(url: string): string | null {
 
 export async function deleteAthleteFirebase(id: string) {
     try {
-        await deleteDoc(doc(db, dbName, id));
+         const athleteRef = doc(db, dbName, id);
+        const oldDoc = await getDoc(athleteRef);
+
+        if (!oldDoc.exists()) {
+            throw new Error("Atleta não encontrado.");
+        }
+
+        const oldData = oldDoc.data() as AthleteType;
+
+        const categoryRef = doc(db, "Categories", oldData.category);
+        const docSnap = await getDoc(categoryRef);
+
+        await runTransaction(db, async (transaction) => {
+            transaction.delete(athleteRef);
+            if (docSnap.exists()) {
+            transaction.update(categoryRef, {
+                totalAthletes: increment(-1),
+            });
+        }
+        });
+
+        // Deleta a foto do Storage se existir
+        if (oldData.photo) {
+            const path = getStoragePathFromUrl(oldData.photo);
+            if (path) {
+                const imageRef = storageRef(storage, path);
+                await deleteObject(imageRef).catch((err) => {
+                    console.warn("Erro ao remover imagem do atleta:", err.message);
+                });
+            }
+        }
+
     } catch (e: any) {
-        throw new Error(e.message)
+        console.error("Erro ao deletar atleta:", e);
+        throw new Error(e.message || "Erro ao deletar atleta.");
     }
 }

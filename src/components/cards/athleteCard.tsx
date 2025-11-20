@@ -34,7 +34,7 @@ export default function AthleteCard({ data }: Props) {
                 <Text style={{width: '100%'}}>Idade: {age} anos</Text>
                 <Text style={{width: '100%'}}>{data.position}</Text>
                 <Text style={{width: '100%'}}>{data.status}</Text>
-                <Button title="Ver mais" size="small" onPress={() => navigation.navigate('DetailsAthlete', { athlete: data, age: age })} />
+                <Button title="Ver mais" size="small" style={{width: "100%"}} onPress={() => navigation.navigate('DetailsAthlete', { athlete: data, age: age })} />
             </Layout>
             <ModalOpenPhoto setVisible={setVisibleModal} visible={visibleModal} uri={data.photo || ""} />
         </Layout>
