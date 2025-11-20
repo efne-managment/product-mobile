@@ -1,24 +1,23 @@
 import React, { forwardRef, useState } from "react";
-import { Platform, Pressable, StyleSheet, Text, View } from "react-native";
-import DateTimePicker, { DateTimePickerEvent } from "@react-native-community/datetimepicker";
+import { Platform, Pressable, StyleSheet, View } from "react-native";
 import { useThemeContext } from "@/context/ThemeContext";
 import { Icon } from "../icon";
+import DateTimePicker, { DateTimePickerAndroid, DateTimePickerEvent, type DatePickerOptions } from "@react-native-community/datetimepicker";
+import { Text } from "../texts";
 
 type Status = "default" | "success" | "danger";
-type Props = {
-  name: string;
+type Props = DatePickerOptions & {
   value: Date;
-  setFieldValue: (field: string, value: any, shouldValidate?: boolean) => void;
+  name: string;
   placeholder?: string;
+  label: string;
   status?: Status;
-  minimumDate?: Date;
-  maximumDate?: Date;
 };
 
 const DateInput = forwardRef<View, Props>(({
-  name,
   value,
-  setFieldValue,
+  label,
+  onChange,
   placeholder = "Selecionar data",
   status = "default",
   minimumDate,
@@ -38,18 +37,26 @@ const DateInput = forwardRef<View, Props>(({
     danger: colors.danger,
   };
 
-  const onChange = (event: DateTimePickerEvent, selectedDate?: Date) => {
-    setShow(false);
-    if (selectedDate) {
-      setFieldValue(name, selectedDate);
-    }
+  const showMode = (currentMode: 'date' | 'time' | undefined) => {
+    DateTimePickerAndroid.open({
+      value,
+      onChange,
+      mode: currentMode,
+      is24Hour: true,
+    });
   };
+
+  const showDatepicker = () => {
+    showMode('date');
+  };
+
 
   return (
     <>
+      <Text variant="label">{label}</Text>
       <Pressable
         ref={ref}
-        onPress={() => setShow(true)}
+        onPress={showDatepicker}
         style={[
           styles.input,
           {
@@ -66,10 +73,10 @@ const DateInput = forwardRef<View, Props>(({
 
       {show && (
         <DateTimePicker
-          mode="date"
-          display={Platform.OS === "ios" ? "spinner" : "inline"}
           value={value}
+          mode="date"
           onChange={onChange}
+          display={Platform.OS === "ios" ? "spinner" : "inline"}
           minimumDate={minimumDate}
           maximumDate={maximumDate}
           locale="pt-BR"
