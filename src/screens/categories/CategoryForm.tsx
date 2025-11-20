@@ -3,13 +3,10 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RoutesParamList } from '@/navigation/AppNavigaton';
 import { useNavigation } from '@react-navigation/native';
 import ModalNewDayTime from '../../components/modals/ModalNewDayTime';
-import { Icon, IconElement } from '@ui-kitten/components';
 import styles from './styles';
-import { FlatList, KeyboardAvoidingView, Platform, ScrollView, ToastAndroid } from 'react-native';
+import { ScrollView } from 'react-native';
 import { Formik } from 'formik';
-import { initialValuesCategory } from '@/constants/defaultValues';
 import { saveCategorySchema } from '@/validators/saveCategorySchema';
-import { useCategoriesContext } from '@/context/CategoriesContext';
 import { CategoryType } from '@/types/category';
 import { Button, IconButton, Input, Layout, SectionDivider, Text } from '@/components';
 import { useThemeContext } from '@/context/ThemeContext';
@@ -40,7 +37,6 @@ export default function CategoryForm({ initialValues, handleSubmit, loading = fa
         initialValues={initialValues}
         validationSchema={saveCategorySchema}
         onSubmit={(values) => {
-          console.log("daados");
           handleSubmit(values)
         }}
       >

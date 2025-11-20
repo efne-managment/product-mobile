@@ -1,13 +1,13 @@
 import { Layout } from "@/components";
 import FAB from "@/components/buttons/fab";
 import AthleteCard from "@/components/cards/athleteCard";
+import { StyleSheet } from "react-native";
 import CategoryCard from "@/components/cards/categoryCard";
 import { RoutesParamList } from "@/navigation/AppNavigaton";
 import { AthleteType } from "@/types/athlete";
 import { CategoryType } from "@/types/category";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import { List, StyleService } from "@ui-kitten/components";
 import { FlatList } from "react-native";
 
 type AthleteProps = {
@@ -61,7 +61,7 @@ export default function ListScreen({ callCard, data, nextRoute }: Props) {
 
 
 
-const styles = StyleService.create({
+const styles = StyleSheet.create({
     container: {
         flex: 1,
         flexDirection: 'row',

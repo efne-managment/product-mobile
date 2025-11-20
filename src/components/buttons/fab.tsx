@@ -1,22 +1,16 @@
-
-import { useNavigation } from "@react-navigation/native";
-import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { Pressable, PressableProps, StyleSheet } from "react-native";
-import { Icon } from "@ui-kitten/components";
 import { useThemeContext } from "@/context/ThemeContext";
-import { RoutesParamList } from "@/navigation/AppNavigaton";
+import { Icon } from "../icon";
 
 type Props = PressableProps & {
-  iconName: string;
+  iconName: "plus" | "edit" | "trash" | "settings" | "profile";
   status?: "primary" | "danger" | "success" | "warning" | "basic";
 };
 
-type NavigationProp = NativeStackNavigationProp<RoutesParamList>;
-
-export default function FAB({ iconName, status = "primary", ...rest}: Props) {
-  const navigation = useNavigation<NavigationProp>();
+export default function FAB({ iconName, status = "primary", ...rest }: Props) {
   const { getDefaultColors } = useThemeContext();
   const { colors } = getDefaultColors();
+
 
   const backgroundMap: Record<string, string> = {
     primary: colors.primary,
@@ -25,8 +19,6 @@ export default function FAB({ iconName, status = "primary", ...rest}: Props) {
     warning: colors.warning,
     basic: colors.grayLight,
   };
-
-  const fill = colors.textButton;
 
   return (
     <Pressable {...rest}
@@ -38,7 +30,7 @@ export default function FAB({ iconName, status = "primary", ...rest}: Props) {
       ]}
       hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
     >
-      <Icon name={iconName} fill={fill} style={styles.icon} />
+     <Icon iconName={iconName} color="white"/>
     </Pressable>
   );
 }
@@ -46,7 +38,7 @@ export default function FAB({ iconName, status = "primary", ...rest}: Props) {
 const styles = StyleSheet.create({
   buttonFAB: {
     position: "absolute",
-    zIndex: 10,
+    zIndex: 1000,
     bottom: 20,
     right: 20,
     width: 70,

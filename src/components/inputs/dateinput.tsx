@@ -1,22 +1,22 @@
 import React, { forwardRef, useState } from "react";
-import { Platform, Pressable, StyleSheet, Text, View } from "react-native";
-import DateTimePicker from "@react-native-community/datetimepicker";
+import { Platform, Pressable, StyleSheet, View } from "react-native";
 import { useThemeContext } from "@/context/ThemeContext";
-import { Icon } from "@ui-kitten/components";
+import { Icon } from "../icon";
+import DateTimePicker, { DateTimePickerAndroid, DateTimePickerEvent, type DatePickerOptions } from "@react-native-community/datetimepicker";
+import { Text } from "../texts";
 
 type Status = "default" | "success" | "danger";
-
-type Props = {
+type Props = DatePickerOptions & {
   value: Date;
-  onChange: (date: Date) => void;
+  name: string;
   placeholder?: string;
+  label: string;
   status?: Status;
-  minimumDate?: Date;
-  maximumDate?: Date;
 };
 
 const DateInput = forwardRef<View, Props>(({
   value,
+  label,
   onChange,
   placeholder = "Selecionar data",
   status = "default",
@@ -37,11 +37,26 @@ const DateInput = forwardRef<View, Props>(({
     danger: colors.danger,
   };
 
+  const showMode = (currentMode: 'date' | 'time' | undefined) => {
+    DateTimePickerAndroid.open({
+      value,
+      onChange,
+      mode: currentMode,
+      is24Hour: true,
+    });
+  };
+
+  const showDatepicker = () => {
+    showMode('date');
+  };
+
+
   return (
     <>
+      <Text variant="label">{label}</Text>
       <Pressable
         ref={ref}
-        onPress={() => setShow(true)}
+        onPress={showDatepicker}
         style={[
           styles.input,
           {
@@ -53,15 +68,15 @@ const DateInput = forwardRef<View, Props>(({
         <Text style={[styles.text, { color: colors.text }]}>
           {formattedDate || placeholder}
         </Text>
-        <Icon name="calendar-outline" fill={colors.text} style={styles.icon} />
+        <Icon iconName="calendar" color={colors.text} size={20} />
       </Pressable>
 
       {show && (
         <DateTimePicker
+          value={value}
           mode="date"
+          onChange={onChange}
           display={Platform.OS === "ios" ? "spinner" : "inline"}
-          value={value instanceof Date ? value : new Date()}
-          onChange={(date) => onChange(new Date(date.nativeEvent.timestamp))}
           minimumDate={minimumDate}
           maximumDate={maximumDate}
           locale="pt-BR"
@@ -70,6 +85,7 @@ const DateInput = forwardRef<View, Props>(({
     </>
   );
 });
+
 
 DateInput.displayName = "DateInput";
 export default DateInput;

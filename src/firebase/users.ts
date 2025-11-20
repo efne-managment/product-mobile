@@ -1,10 +1,7 @@
 import { addDoc, collection, deleteDoc, doc, getDoc, getDocs, getFirestore, query, setDoc, where } from "firebase/firestore";
-import { app } from "./config";
-import { userType } from "@/constants/types";
+import { db } from "./config";
 import { getCurrentUser } from "./authentication";
-import { getAuth } from "firebase/auth";
-
-const db = getFirestore(app)
+import { userType } from "@/types/authentication";
 
 const dbName = "Users"
 export async function createUser(data: userType) {

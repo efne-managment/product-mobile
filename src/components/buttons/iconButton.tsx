@@ -1,9 +1,9 @@
-import { Pressable, StyleSheet, Text, PressableProps, DimensionValue, Dimensions} from "react-native";
+import { Pressable, StyleSheet, PressableProps} from "react-native";
 import { useThemeContext } from "@/context/ThemeContext";
-import { Icon } from "@ui-kitten/components";
+import { Icon } from "../icon";
 
 type Props = PressableProps & {
-  iconName: string;
+  iconName: "plus" | "edit" | "trash" | "settings" | "profile";
   iconColor: string;
   status?: "primary" | "danger" | "success" | "warning" | "basic";
   appearance?: "default" | "outline" | "ghost";
@@ -50,7 +50,7 @@ export default function IconButton({
         {width:40, height:40, backgroundColor, borderColor, borderWidth: appearance === "outline" ? 1 : 0 }
       ]}
     >
-     <Icon name={iconName} fill={iconColor} />
+     <Icon iconName={iconName} color={iconColor} />
     </Pressable>
   );
 }

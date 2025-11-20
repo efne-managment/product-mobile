@@ -13,6 +13,7 @@ import * as ImagePicker from 'expo-image-picker';
 import { AthleteType } from "@/types/athlete";
 import { Button, Checkbox, Input, Layout, SectionDivider, Select, Text, DateInput } from "@/components";
 import { CategoryType } from "@/types/category";
+import { DateTimePickerEvent } from "@react-native-community/datetimepicker";
 
 type Props = {
     initialValues: AthleteType;
@@ -24,7 +25,7 @@ type Props = {
 
 type newAthleteScreenProp = NativeStackNavigationProp<RoutesParamList>;
 
-export default function AthleteForm({ initialValues, handleSubmit, loading = false, categories = [], mode}: Props) {
+export default function AthleteForm({ initialValues, handleSubmit, loading = false, categories = [], mode }: Props) {
 
     const navigation = useNavigation<newAthleteScreenProp>();
 
@@ -103,16 +104,13 @@ export default function AthleteForm({ initialValues, handleSubmit, loading = fal
 
         // ✅ Pegue o primeiro erro com base na ordem dos campos no formulário
         const firstErrorKey = Object.keys(fieldRefs).find((key) => flatErrors[key] !== undefined);
-        console.log(firstErrorKey)
+
         const ref = firstErrorKey ? fieldRefs[firstErrorKey] : null;
-        console.log(ref)
 
         if (ref?.current && scrollRef.current) {
-            console.log("inside if current refs scroll")
             ref.current.measureLayout(
                 scrollRef.current,
                 (y: number) => {
-                    console.log("y " + y)
                     scrollRef.current?.scrollTo({ y: y - 20, animated: true });
                     ref.current?.focus?.();
                 },
@@ -139,14 +137,14 @@ export default function AthleteForm({ initialValues, handleSubmit, loading = fal
                     <Formik
                         initialValues={initialValues}
                         validationSchema={saveAthleteSchema}
-                        enableReinitialize
+                         enableReinitialize={true}
+                        validateOnMount={true}
+                        validateOnBlur={true}
                         onSubmit={async (values, { setSubmitting, validateForm }) => {
                             const errors = await validateForm();
 
                             if (Object.keys(errors).length > 0) {
-                                Alert.alert("before sendToError")
-                                scrollToError(errors); // 👈 faz scroll até o primeiro campo com erro
-                                console.log("after sendToError")
+                                scrollToError(errors);
                                 setSubmitting(false);
                                 return;
                             }
@@ -283,15 +281,10 @@ export default function AthleteForm({ initialValues, handleSubmit, loading = fal
 
                                 <Layout style={styles.containerInput}>
                                     <DateInput
-                                        placeholder="Data de nascimento"
+                                        name="born"
                                         ref={bornRef}
                                         value={values.born}
-                                        onChange={(date) => {
-                                            console.log("Nova data selecionada:", date);
-                                            setFieldValue("born", date);
-                                            console.log("values.born (após set):", values.born);
-                                            aditionalInformationRef.current?.focus();
-                                        }}
+                                        setFieldValue={setFieldValue}
                                         minimumDate={fullMinDate}
                                         maximumDate={fullMaxDate}
                                         status={errors.born ? "danger" : touched.born ? "success" : "default"}

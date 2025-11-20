@@ -93,7 +93,6 @@ export async function uploadImageAsync(uri: string, path: string): Promise<strin
     if (!uid) {
         throw new Error("Usuário não autenticado.");
     }
-    console.log("UID do usuário atual:", uid);
 
     const userSnap = await getDoc(doc(db, "Users", uid));
 
@@ -121,11 +120,7 @@ export async function uploadImageAsync(uri: string, path: string): Promise<strin
 
 export async function editAthleteFirebase(data: AthleteType, id: string) {
 
-    console.log("ID do atleta:", id);
-    console.log("Dados do atleta:", data);
     try {
-        console.log("ID do atleta:", id);
-        console.log("Dados do atleta:", data);
         const athleteRef = doc(db, dbName, id);
         const oldDoc = await getDoc(athleteRef);
 

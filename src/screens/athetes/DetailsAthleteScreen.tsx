@@ -2,7 +2,6 @@ import * as React from 'react';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RoutesParamList } from '@/navigation/AppNavigaton';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
-import { Icon } from '@ui-kitten/components';
 import styles from './styles';
 import { Pressable, ScrollView } from 'react-native-gesture-handler';
 import { Image } from 'expo-image';

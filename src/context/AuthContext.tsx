@@ -52,7 +52,7 @@ function AuthProvider({ children }: any) {
             }
     
         } catch (e) {
-            console.log("Erro ao carregar dados armazenados", e);
+            console.error("Erro ao carregar dados armazenados", e);
         }
     }
     
