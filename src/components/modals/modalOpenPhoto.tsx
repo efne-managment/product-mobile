@@ -3,6 +3,7 @@ import { Image } from 'expo-image';
 import { Modal, Pressable, StyleSheet } from 'react-native';
 import { Layout } from '../views';
 import { Button } from '../buttons';
+import { Text } from '../texts';
 
 interface OpenPhotoProps {
     uri: string;
@@ -12,7 +13,6 @@ interface OpenPhotoProps {
 
 const ModalOpenPhoto: React.FC<OpenPhotoProps> = ({ uri, visible, setVisible }) => {
     return (
-
         <Modal visible={visible}
             animationType="slide"
             transparent
@@ -20,14 +20,14 @@ const ModalOpenPhoto: React.FC<OpenPhotoProps> = ({ uri, visible, setVisible }) 
             <Pressable
                 onPress={() => setVisible(false)}
                 style={styles.overlay}
-            ></Pressable>
+            ><Text style={{ color: 'white', fontSize: 18, fontWeight: 'bold', width: "100%", textAlign: 'right' }}>X</Text></Pressable>
             <Layout style={styles.centeredView}>
                 <Layout style={styles.modalView}>
                     <Image
                         source={{ uri }}
-                        style={{ width: 400, height: 600, resizeMode: 'contain', }}
+                        style={{width: "90%", height: "90%", objectFit: 'cover', }}
                     />
-                    <Button title='Fechar' onPress={() => setVisible(false)} style={{ marginTop: 50, borderRadius: 25 }} />
+                    <Button title='Fechar' onPress={() => setVisible(false)} size='small' />
                 </Layout>
             </Layout>
 
@@ -43,17 +43,16 @@ const styles = StyleSheet.create({
     centeredView: {
         flex: 1,
         alignItems: 'center',
-        flexDirection: 'column',
         backgroundColor: "#00000066",
         justifyContent: "center",
-        padding: 26,
+        padding: 15,
     },
     modalView: {
-        width: 450,
-        margin: 10,
+        width: "100%",
         backgroundColor: 'white',
         borderRadius: 20,
-        padding: 35,
+        padding: 10,
+        gap: 5,
         alignItems: 'center',
         shadowColor: '#000',
         shadowOffset: {

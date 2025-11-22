@@ -137,7 +137,7 @@ export default function ModalNewDayTime({
                     {({ handleSubmit, setFieldValue, errors, touched }) => (
                         <Layout style={styles.modalView}>
                             <Text variant="h5" style={{ marginBottom: 16, width: "100%", textAlign: 'center' }}>Novo dia e horário</Text>
-                            <Layout style={{ width: "100%", marginVertical: 25 }}>
+                            <Layout style={{ width: "100%", }}>
                                 <Select
                                     label="Dia da semana"
                                     ref={dayRef}
@@ -153,7 +153,7 @@ export default function ModalNewDayTime({
                                 {errors.day && <Text status="danger" style={{ width: "100%" }}>{errors.day}</Text>}
                             </Layout>
 
-                            <Layout style={{ width: "100%", marginVertical: 25 }}>
+                            <Layout style={{ width: "100%", marginVertical: 10 }}>
                                 <Select
                                     ref={startTimeRef}
                                     label="Hora de início"
@@ -170,7 +170,7 @@ export default function ModalNewDayTime({
                             </Layout>
 
 
-                            <Layout style={{ width: "100%", marginVertical: 25 }}>
+                            <Layout style={{ width: "100%"}}>
                                 <Select
                                     ref={endTimeRef}
                                     label="Hora de término"
@@ -202,17 +202,14 @@ const styles = StyleSheet.create({
     centeredView: {
         flex: 1,
         alignItems: 'center',
-        flexDirection: 'column',
         backgroundColor: "#00000066",
         justifyContent: "center",
         padding: 26,
     },
     modalView: {
-        width: 450,
-        margin: 10,
         backgroundColor: 'white',
         borderRadius: 20,
-        padding: 35,
+        padding: 25,
         alignItems: 'center',
         shadowColor: '#000',
         shadowOffset: {
