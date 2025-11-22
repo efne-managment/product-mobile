@@ -6,13 +6,12 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         justifyContent: 'space-between',
         alignItems: 'center',
-        paddingHorizontal: 15,    
-        height: "100%" 
+        paddingHorizontal: 10,    
     },
 
     containerImg:{
-        marginVertical: 10,
-        height: 130,
+        marginVertical: 1,
+        height: "auto",
         alignItems: "center",
         justifyContent: 'flex-start',
     },
@@ -42,8 +41,9 @@ const styles = StyleSheet.create({
     }, 
     image: {
         width: 150,
-        height: 130,
+        height: 180,
         objectFit: "contain",
+        borderRadius: 30
     },
     row: {
         width: "100%",
@@ -63,7 +63,6 @@ const styles = StyleSheet.create({
         flexDirection: "column",
         alignItems: "baseline",
         justifyContent: "space-between",
-        width: "50%",
     },
     divider: { 
         backgroundColor: 'black', 
@@ -71,7 +70,7 @@ const styles = StyleSheet.create({
         height: 2
     }, 
     title: {
-        marginBottom: 20,
+        marginBottom: 15,
       },
       buttonFAB: {
         position: "absolute",
@@ -84,14 +83,20 @@ const styles = StyleSheet.create({
     
       },
       text: {
-        fontSize: 20,
+        fontSize: 18,
         marginBottom: 15,
-        width: '100%'
       },
       icon: {
         width: 32,
         height: 32,
       },
+
+    sectionDataAthlete: {
+        flexDirection: "row",
+        gap: 10,
+        width: "100%",
+        marginBottom: 20,
+    },
 });
 
 export default styles

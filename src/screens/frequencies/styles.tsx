@@ -22,15 +22,19 @@ const styles = StyleSheet.create({
         justifyContent: "space-around",
     },
     containerInput: {
-        marginVertical: 20,
+        marginVertical: 10,
         width: "100%",
     },
     containerFooter: {
         width: "100%",
-        paddingTop: 10,
+        paddingTop: 15,
+        marginVertical: 10,
+        flexDirection: "row",
         justifyContent: "space-around",
         borderTopWidth: 1,
         borderColor: "#ccc",
+        zIndex: 10,
+        backgroundColor: "white",
     },
     containerCheckForgot: {
       flexDirection: "row",
