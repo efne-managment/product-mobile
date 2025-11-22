@@ -8,15 +8,16 @@ import { AthleteType } from '@/types/athlete';
 import { FlatList, ToastAndroid } from 'react-native';
 import AthleteCard from '@/components/cards/athleteCard';
 import { useCategoriesContext } from '@/context/CategoriesContext';
+import { deserializeCategory, serializeCategory } from '@/utils/serializesParams';
 
-type DetailsCategoryRouteProp = RouteProp<RoutesParamList, "DetailsCategory">;
+type ScreenRouteProp = RouteProp<RoutesParamList, "DetailsCategory">;
 
-type detailsCategoryScreenProp = NativeStackNavigationProp<RoutesParamList, "DetailsCategory">;
+type ScreenNavigationProp = NativeStackNavigationProp<RoutesParamList, "DetailsCategory">;
 
 export default function DetailsCategoryScreen() {
-  const navigation = useNavigation<detailsCategoryScreenProp>();
-  const route = useRoute<DetailsCategoryRouteProp>();
-  const category = route.params.category;
+  const navigation = useNavigation<ScreenNavigationProp>();
+  const route = useRoute<ScreenRouteProp>();
+  const category = deserializeCategory(route.params.category);
   const { getAthletesByCategory } = useAthletesContext();
   const [athletes, setAthletes] = React.useState<AthleteType[]>([])
 
@@ -40,7 +41,6 @@ export default function DetailsCategoryScreen() {
     const [isFabMenuOpen, setIsFabMenuOpen] = React.useState(false);
 
     const handleDelete = () => {
-  
       setIsFabMenuOpen(false);
       if (category?.id) {
         deleteCategory(category.id);
@@ -55,7 +55,7 @@ export default function DetailsCategoryScreen() {
     }
   }, [category])
 
-  const createdAt = category?.createdAt ? new Date(category.createdAt.seconds * 1000).toLocaleDateString('pt-BR') : "Não consta"
+  const createdAt = category?.createdAt ? category.createdAt.toLocaleDateString('pt-BR') : "Não consta"
   return (
     <Layout style={{ flex: 1, padding: 16, flexDirection: 'column', justifyContent: 'flex-start' }}>
       <Text variant='labelBold' style={{ width: "50%" }} status={category.status == 'ativo' ? 'success' : 'danger'}>{category.status}</Text>
@@ -102,14 +102,14 @@ export default function DetailsCategoryScreen() {
             keyExtractor={(item, index) => index.toLocaleString()}
             renderItem={({ item }) => (<AthleteCard data={item} />)}
             contentContainerStyle={{ flexGrow: 1 }}
-            style={{ width: "100%", }} /> : <Text variant='h5' status='danger'>Nenhum atleta encontrado nesta categoria.</Text>
+            style={{ width: "100%",  margin: 0}} /> : <Text variant='h5' status='danger'>Nenhum atleta encontrado nesta categoria.</Text>
         }
       </Layout>
       {/* FABs */}
           {/* Quando o menu estiver aberto, mostra os botões de ação */}
           {isFabMenuOpen && (
             <>
-              <FAB iconName='edit' status='success' onPress={() => navigation.replace('EditCategory', {category})} location="bottom-right"     style={{ bottom: 110 }} />
+              <FAB iconName='edit' status='success' onPress={() => navigation.replace('EditCategory', {category: serializeCategory(category)})} location="bottom-right"     style={{ bottom: 110 }} />
       
               <FAB
                 iconName="trash"

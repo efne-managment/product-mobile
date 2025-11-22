@@ -29,9 +29,7 @@ function AthletesProvider({ children }: any) {
     const getAllAthletes = async () => {
         try {
             const athletesFirebase = await getAllAthletesFirebase();
-
             if (athletesFirebase) setAthletes(athletesFirebase);
-
         } catch (e: any) {
             throw new Error(e.message)
         }
@@ -40,14 +38,8 @@ function AthletesProvider({ children }: any) {
 
     const editAthlete = async (data: AthleteType, id: string) => {
         try {
-            if (!id) throw new Error("ID do atleta não encontrado.")
-            if (!data) throw new Error("Dados do atleta não encontrados.")
            await editAthleteFirebase(data, id);
-            const listAtualized = athletes.map((athlete) => {
-                if (athlete.id === id) return data;
-                return athlete;
-            });
-            setAthletes(listAtualized);
+            getAllAthletes();
         } catch (e: any) {
             throw new Error(e.message)
         }

@@ -1,68 +1,85 @@
-import { RoutesParamList } from "@/navigation/AppNavigaton";
 import ModalOpenPhoto from "@/components/modals/modalOpenPhoto";
-import { useNavigation } from "@react-navigation/native";
-import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { Image } from "expo-image";
 import React from "react";
 import { Pressable, StyleSheet } from "react-native";
-import { AthleteType } from "@/types/athlete";
 import { Layout } from "../views";
 import { Text } from "../texts";
 import { Button } from "../buttons";
-import { serializeAthlete } from "@/utils/serializesParams";
+import { useThemeContext } from "@/context/ThemeContext";
+import { CallAthlete } from "@/types/frequency";
 
 type Props = {
-  data: AthleteType;
+  data: CallAthlete;
+  present?: boolean;
+  onTogglePresent?: () => void;
+  showMarkPresenceButton?: boolean;
+  editable?: boolean;
 };
 
-type ListScreensProp = NativeStackNavigationProp<RoutesParamList>;
-
-export default function AthleteCard({ data }: Props) {
-  const navigation = useNavigation<ListScreensProp>();
+export default function FrequencyAthleteCard({
+  data,
+  present = false,
+  onTogglePresent,
+  showMarkPresenceButton = true,
+  editable = true,
+}: Props) {
   const [visibleModal, setVisibleModal] = React.useState(false);
-  const uriImage = data?.photo
-    ? { uri: data.photo }
+  const uriImage = data?.athlete.photoURL
+    ? { uri: data.athlete.photoURL }
     : require("../../../assets/person_default.jpg");
-  const age = calculateAge(data.born);
+
+  const { getDefaultColors } = useThemeContext();
+  const { colors } = getDefaultColors();
+
+  /**
+   * limitar o nome a primeiro e ultimo e os do meio com primeira letra apenas
+   */
+  const nameParts = data.athlete.name.split(" ");
+  let displayName = "";
+  if (nameParts.length > 2) {
+    displayName = `${nameParts[0]} ${nameParts
+      .slice(1, -1)
+      .map((part) => part.charAt(0) + ".")
+      .join(" ")} ${nameParts[nameParts.length - 1]}`;
+  } else {
+    displayName = data.athlete.name;
+  }
 
   return (
-    <Layout style={styles.container}>
+    <Layout style={[styles.container]}>
       <Layout style={styles.containerLeft}>
         <Pressable
           style={styles.image}
           onPress={() => {
-            if (data.photo) setVisibleModal(true);
+            if (data.athlete.photoURL) setVisibleModal(true);
           }}
         >
           <Image style={styles.image} source={uriImage} />
         </Pressable>
       </Layout>
+
       <Layout style={styles.containerRight}>
         <Text variant="h5" style={{ width: "100%" }}>
-          {data.name}
+          {displayName}
         </Text>
-        <Text variant="h5" style={{ width: "100%" }}>Idade: {age} anos</Text>
-        <Layout style={{ flexDirection: "row", gap: 10 }}>
-        <Text variant="h6" style={{ width: "100%" }}>{data.position}</Text>
-        <Text variant="h6" status={data.status === "matriculado" ? "success" : data.status === 'ativo' ? "default" : "danger"} style={{ width: "100%" }}>{data.status}</Text>
 
-        </Layout>
-        <Button
-          title="Ver mais"
-          size="small"
-          style={{ width: "100%" }}
-          onPress={() =>
-            navigation.navigate("DetailsAthlete", {
-              athlete: serializeAthlete(data),
-              age: age,
-            })
-          }
-        />
+        {showMarkPresenceButton && (
+          <Button
+            title={
+              present ? "Presente" : editable ? "Marcar presença" : "Ausente"
+            }
+            size="small"
+            status={present ? "success" : "basic"}
+            style={{ width: "100%" }}
+            onPress={editable ? onTogglePresent : undefined}
+          />
+        )}
       </Layout>
+
       <ModalOpenPhoto
         setVisible={setVisibleModal}
         visible={visibleModal}
-        uri={data.photo || ""}
+        uri={data.athlete.photoURL || ""}
       />
     </Layout>
   );
@@ -72,7 +89,7 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: "row",
     width: "95%",
-    height: "auto",
+    height: 120,
     marginLeft: 10,
     alignItems: "center",
     paddingVertical: 10,
@@ -97,11 +114,10 @@ const styles = StyleSheet.create({
   },
   containerRight: {
     marginLeft: 10,
-    height: "100%",
     flex: 1,
     flexDirection: "column",
-    alignItems: "baseline",
-    gap: 10
+    justifyContent: "space-between",
+    gap: 10,
   },
   image: {
     width: "100%",
@@ -112,12 +128,9 @@ const styles = StyleSheet.create({
 });
 
 function calculateAge(born: Date): number {
-  // Obter a data atual
   const today = new Date();
-
-  // Calcular a idade base
   let age = today.getFullYear() - born.getFullYear();
-  // Ajustar se o aniversário ainda não ocorreu neste ano
+
   const hasHadBirthdayThisYear =
     today.getMonth() > born.getMonth() ||
     (today.getMonth() === born.getMonth() && today.getDate() >= born.getDate());

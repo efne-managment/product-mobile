@@ -8,6 +8,7 @@ import { Text } from "../texts";
 type Status = "default" | "success" | "danger";
 type Props = DatePickerOptions & {
   value: Date;
+  editable?: boolean;
   name: string;
   placeholder?: string;
   label: string;
@@ -17,6 +18,7 @@ type Props = DatePickerOptions & {
 const DateInput = forwardRef<View, Props>(({
   value,
   label,
+  editable = true,
   onChange,
   placeholder = "Selecionar data",
   status = "default",
@@ -62,6 +64,7 @@ const DateInput = forwardRef<View, Props>(({
           {
             backgroundColor,
             borderColor: borderColorMap[status],
+            opacity: editable ? 0.7 : 1,
           },
         ]}
       >

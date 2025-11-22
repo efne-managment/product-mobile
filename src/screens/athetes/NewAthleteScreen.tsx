@@ -11,10 +11,10 @@ import { AthleteType } from "@/types/athlete";
 import { Button, Layout, Text } from "@/components";
 import AthleteForm from "./AthleteForm";
 
-type newAthleteScreenProp = NativeStackNavigationProp<RoutesParamList, "NewAthlete">;
+type ScreenNavigationProp = NativeStackNavigationProp<RoutesParamList, "NewAthlete">;
 
 export default function NewAthleteScreen() {
-  const navigation = useNavigation<newAthleteScreenProp>();
+  const navigation = useNavigation<ScreenNavigationProp>();
   const { createAthlete } = useAthletesContext();
 
   const [loading, setLoading] = useState(false);
@@ -44,7 +44,7 @@ export default function NewAthleteScreen() {
     try {
       await createAthlete(values);
       ToastAndroid.show("Atleta cadastrado com sucesso!", ToastAndroid.LONG);
-      navigation.navigate('ListAthletes');
+      navigation.goBack();
     } catch (error) {
       console.error("Erro ao salvar os dados:", error);
       ToastAndroid.show("Erro ao cadastrar atleta. Tente novamente.", ToastAndroid.LONG);

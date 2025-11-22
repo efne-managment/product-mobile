@@ -22,63 +22,12 @@ import SettingsScreen from "@/screens/settings/SettingsScreen";
 import { Text } from "@/components";
 import EditCategoryScreen from "@/screens/categories/EditCategoryScreen";
 import EditAthleteScreen from "@/screens/athetes/EditAthleteScreen";
+import EditFrequencyScreen from "@/screens/frequencies/EditFrequencyScreen";
 
 const TabIcon = (props: any) => <Octicons {...props} name={props.name} />;
-const TabTitle = (props: any) => <Text variant="p" status="basic">{props.title}</Text>;
+const TabTitle = (props: any) => <Text variant="label" status="basic">{props.title}</Text>;
 
 const Tab = createBottomTabNavigator();
-
-const AthletesStack = createNativeStackNavigator();
-const CategoriesStack = createNativeStackNavigator();
-const FinancialStack = createNativeStackNavigator();
-const FrequenciesStack = createNativeStackNavigator();
-const SettingsStack = createNativeStackNavigator();
-
-function AthletesStackScreen() {
-  return (
-    <AthletesStack.Navigator screenOptions={{ headerShown: false }}>
-      <AthletesStack.Screen name="ListAthletes" component={ListAthletesScreen} options={{ headerShown: true, headerTitle: 'Atletas', headerTitleAlign: 'center', }} />
-      <AthletesStack.Screen name="NewAthlete" component={NewAthleteScreen} options={{ headerShown: true, headerTitle: 'Novo atleta', headerTitleAlign: 'center' }} />
-    </AthletesStack.Navigator>
-  );
-}
-
-function CategoriesStackScreen() {
-  return (
-    <CategoriesStack.Navigator screenOptions={{ headerShown: false }}>
-      <CategoriesStack.Screen name="ListCategories" component={ListCategoriesScreen} options={{ headerShown: true, headerTitle: 'Categorias', headerTitleAlign: 'center', }} />
-      <CategoriesStack.Screen name="NewCategory" component={NewCategoryScreen} options={{ headerShown: true, headerTitle: 'Nova categoria', headerTitleAlign: 'center' }} />
-    </CategoriesStack.Navigator>
-  )
-}
-
-function FinancialStackScreen() {
-  return (
-    <FinancialStack.Navigator screenOptions={{ headerShown: false }}>
-      <FinancialStack.Screen name="Financials" component={ListFinancialsScreen} options={{ headerShown: false }} key="ListFinancials" />
-      <FinancialStack.Screen name="NewPayment" component={NewFinancialScreen} options={{ headerShown: false }} key="NewPayment" />
-    </FinancialStack.Navigator>
-  )
-}
-
-function FrequenciesStackScreen() {
-  return (
-    <FrequenciesStack.Navigator screenOptions={{ headerShown: false }} initialRouteName="ListFrequencies">
-      <FrequenciesStack.Screen name="ListFrequencies" component={ListFrequenciesScreen} options={{ headerShown: false }} key="ListFrequencies" />
-      <FrequenciesStack.Screen name="Details" component={DetailsFrequencyScreen} options={{ headerShown: false }} key="CategoriesDetails" />
-      <FrequenciesStack.Screen name="NewFrequency" component={NewFrequencyScreen} options={{ headerShown: false }} key="NewFrequency" />
-    </FrequenciesStack.Navigator>
-  )
-}
-
-function SettingsStackScreen() {
-  return (
-    <SettingsStack.Navigator screenOptions={{ headerShown: false }}>
-      <SettingsStack.Screen name="Configs" component={SettingsScreen} options={{ headerShown: false }} key="Configs" />
-    </SettingsStack.Navigator>
-  )
-}
-// rest of stacks screens
 
 function Tabs() {
   return (
@@ -120,16 +69,16 @@ function Tabs() {
     >
       <Tab.Screen
         name="Athletes"
-        component={AthletesStackScreen}
-        options={{
+         component={ListAthletesScreen} options={{ headerShown: true, headerTitle: 'Atletas', headerTitleAlign: 'center', 
           tabBarLabel: ({ color }) =>
             <TabTitle title="Atletas" color={color} />
         }}
       />
       <Tab.Screen
         name="Categories"
-        component={CategoriesStackScreen}
+        component={ListCategoriesScreen}
         options={{
+          headerShown: true, headerTitle: 'Categorias', headerTitleAlign: 'center',
           tabBarLabel: ({ color }) =>
             <TabTitle title="Categorias" color={color} />
         }}
@@ -141,18 +90,19 @@ function Tabs() {
           tabBarLabel: ({ color }) =>
             <TabTitle title="Financeiro" color={color} />
         }}
-      />
+      />*/}
       <Tab.Screen
         name="Frequencies"
-        component={FrequenciesStackScreen}
+        component={ListFrequenciesScreen}
         options={{
+          headerShown: true, headerTitle: 'Frequências', headerTitleAlign: 'center',
           tabBarLabel: ({ color }) =>
             <TabTitle title="Frequências" color={color} />
         }}
-      /> */}
+      /> 
       <Tab.Screen
         name="Settings"
-        component={SettingsStackScreen}
+        component={SettingsScreen}
         options={{
           tabBarLabel: ({ color }) =>
             <TabTitle title="Ajustes" color={color} />
@@ -169,23 +119,52 @@ function GlobalRoutes() {
   return (
     <RootStack.Navigator screenOptions={{ headerShown: false }}>
       <RootStack.Screen name="Tabs" component={Tabs} />
+      {/* Atletas */}
+      <RootStack.Screen
+        name="NewAthlete"
+        component={NewAthleteScreen}
+        options={{ headerShown: true, headerTitle: 'Novo atleta', headerTitleAlign: 'center' }} />
+
       <RootStack.Screen
         name="DetailsAthlete"
         component={DetailsAthleteScreen}
         options={{ headerShown: true, headerTitle: 'Detalhes do atleta' }}
       />
-      <RootStack.Screen
-        name="DetailsCategory"
-        component={DetailsCategoryScreen}
-        options={{ headerShown: true, headerTitle: 'Detalhes da categoria', headerTitleAlign: 'center' }} />
-      <RootStack.Screen
-        name="EditCategory"
-        component={EditCategoryScreen}
-        options={{ headerShown: true, headerTitle: 'Edição da categoria', headerTitleAlign: 'center' }} />
+
       <RootStack.Screen
         name="EditAthlete"
         component={EditAthleteScreen}
         options={{ headerShown: true, headerTitle: 'Edição de atleta', headerTitleAlign: 'center' }} />
+
+      {/* Categorias */}
+        <RootStack.Screen
+        name="NewCategory"
+        component={NewCategoryScreen}
+        options={{ headerShown: true, headerTitle: 'Nova categoria', headerTitleAlign: 'center' }} />
+      <RootStack.Screen
+        name="DetailsCategory"
+        component={DetailsCategoryScreen}
+        options={{ headerShown: true, headerTitle: 'Detalhes da categoria', headerTitleAlign: 'center' }} />
+     
+      <RootStack.Screen
+        name="EditCategory"
+        component={EditCategoryScreen}
+        options={{ headerShown: true, headerTitle: 'Edição da categoria', headerTitleAlign: 'center' }} />
+
+      {/* Frequências */}
+        <RootStack.Screen
+        name="NewFrequency"
+        component={NewFrequencyScreen}
+        options={{ headerShown: true, headerTitle: 'Nova frequência', headerTitleAlign: 'center' }} />
+       <RootStack.Screen
+        name="DetailsFrequency"
+        component={DetailsFrequencyScreen}
+        options={{ headerShown: true, headerTitle: 'Detalhes da frequência', headerTitleAlign: 'center' }} />
+
+        <RootStack.Screen
+        name="EditFrequency"
+        component={EditFrequencyScreen}
+        options={{ headerShown: true, headerTitle: 'Edição da frequência', headerTitleAlign: 'center' }} />
     </RootStack.Navigator>
 
   )

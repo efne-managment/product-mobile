@@ -10,20 +10,21 @@ import { useCategoriesContext } from "@/context/CategoriesContext";
 import { AthleteType } from "@/types/athlete";
 import { Button, Layout, Text } from "@/components";
 import AthleteForm from "./AthleteForm";
+import { deserializeAthlete, serializeAthlete } from "@/utils/serializesParams";
 
-type EditAthleteRouteProp = RouteProp<RoutesParamList, 'EditAthlete'>;
-type EditAthleteNavProp = NativeStackNavigationProp<RoutesParamList, 'EditAthlete'>;
+type ScreenRouteProp = RouteProp<RoutesParamList, 'EditAthlete'>;
+type ScreenNavigationProp = NativeStackNavigationProp<RoutesParamList, 'EditAthlete'>;
 
 export default function EditAthleteScreen() {
-    const route = useRoute<EditAthleteRouteProp>();
-    const navigation = useNavigation<EditAthleteNavProp>();
+    const route = useRoute<ScreenRouteProp>();
+    const navigation = useNavigation<ScreenNavigationProp>();
   const { editAthlete } = useAthletesContext();
 
   const [loading, setLoading] = useState(false);
  
   const { categories } = useCategoriesContext();
 
-  const athlete = route.params;
+  const athlete = deserializeAthlete(route.params.athlete);
 
   if (categories.length === 0) {
     return (
@@ -45,10 +46,10 @@ export default function EditAthleteScreen() {
   const handleSubmit = async (values: AthleteType) => {
     setLoading(true);
     try {
-      if(athlete.athlete.id){
-        await editAthlete(values, athlete.athlete.id);
+      if(athlete.id){
+        await editAthlete(values, athlete.id);
         ToastAndroid.show("Atleta editado com sucesso!", ToastAndroid.LONG);
-        navigation.replace('DetailsAthlete', { athlete: values, age: new Date().getFullYear() - new Date(values.born).getFullYear() });
+        navigation.replace('DetailsAthlete', { athlete: serializeAthlete(values), age: new Date().getFullYear() - new Date(values.born).getFullYear() });
       } else {
         console.error("ID do atleta não encontrado.");
         ToastAndroid.show("Erro ao editar atleta. Tente novamente.", ToastAndroid.LONG);
@@ -61,6 +62,6 @@ export default function EditAthleteScreen() {
       setLoading(false);
     }
   };
-    return <AthleteForm handleSubmit={handleSubmit} initialValues={athlete.athlete} loading={loading} categories={categories} mode="edit" />
+    return <AthleteForm handleSubmit={handleSubmit} initialValues={athlete} loading={loading} categories={categories} mode="edit" />
 
 }

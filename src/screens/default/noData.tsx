@@ -19,7 +19,7 @@ type Props = {
     return (
       <Layout style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
         <Text variant="h4">{text}</Text>
-                    <FAB iconName="plus" onPress={() => navigation.navigate(nextRoute === "NewAthlete" ? "NewAthlete" : "NewCategory")}/>
+                    <FAB iconName="plus" onPress={() => navigation.navigate(nextRoute as "NewAthlete" | "NewCategory" | "NewFrequency" | "NewFinancial")}/>
       </Layout>
     );
   }

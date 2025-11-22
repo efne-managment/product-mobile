@@ -6,6 +6,7 @@ import { StyleSheet } from "react-native";
 import { RoutesParamList } from "@/navigation/AppNavigaton";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { useNavigation } from "@react-navigation/native";
+import { serializeCategory } from "@/utils/serializesParams";
 
 type Props = {
     data: CategoryType,
@@ -17,16 +18,16 @@ export default function CategoryCard({ data }: Props) {
     const navigation = useNavigation<ListScreensProp>();
     return (
         <Layout style={styles.container}>
-            <Text variant='h6' style={styles.text}>{data.name}</Text>
+            <Text style={styles.text}>{data.name}</Text>
             <Text variant="p" style={styles.text}>Total de atletas: {data.totalAthletes}</Text>
             <Layout style={styles.containerRow}>
-                <Text variant="p"  style={styles.text}>
-                    Criado em: {data.createdAt ? new Date(data.createdAt.seconds * 1000).toLocaleDateString('pt-BR') : "Data não disponível"}
+                <Text variant="label"  style={styles.text}>
+                    Criado em: {data.createdAt ?  new Date(data.createdAt).toLocaleDateString('pt-BR') : "Data não disponível"}
                 </Text>
-                <Text variant="p"  style={styles.text}>{data.status}</Text>
+                <Text variant="label"  style={styles.text}>Status: {data.status}</Text>
             </Layout>
 
-            <Button title="Ver mais" size="small" style={{width: "100%"}} onPress={() => navigation.navigate('DetailsCategory', { category: data})}/>
+            <Button title="Ver mais" size="small" style={{width: "100%"}} onPress={() => navigation.navigate('DetailsCategory', { category: serializeCategory(data)})}/>
         </Layout>
     )
 }
@@ -59,5 +60,6 @@ const styles = StyleSheet.create({
     text: {
         marginBottom: 16,
         width: "100%",
+        textAlign: "center"
     }
 })

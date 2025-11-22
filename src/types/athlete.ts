@@ -35,7 +35,7 @@ export type AthleteType = {
     category: string,
     contact: ContactAthleteType,
     createdAt?: Date,
-    updatedAt?: Timestamp,
+    updatedAt?: Date,
 }
 
 export type AthletesTypeContext = {
@@ -45,4 +45,10 @@ export type AthletesTypeContext = {
     editAthlete: (data: AthleteType, id: string) => Promise<void>,
     deleteAthlete: (id: string) => Promise<void>,
     getAthletesByCategory: (id: string) => Promise<AthleteType[]>
+}
+
+export type AthleteParam = Omit<AthleteType, 'born' | 'createdAt' | 'updatedAt'> & {
+    born?: string,
+    createdAt?: string,
+    updatedAt?: string,
 }
