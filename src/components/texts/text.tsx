@@ -47,9 +47,9 @@ export default function Text({
     h4: { fontSize: 20, fontWeight: "700" },
     h5: { fontSize: 18, fontWeight: "600" },
     h6: { fontSize: 16, fontWeight: "600" },
-    label: { fontSize: 14, fontWeight: "400" },
+    label: { fontSize: 16, fontWeight: "400" },
     labelBold: { fontSize: 16, fontWeight: "bold" },
-    p: { fontSize: 20, fontWeight: "400" },
+    p: { fontSize: 18, fontWeight: "400" },
   };
 
   const statusColors: Record<Status, string> = {

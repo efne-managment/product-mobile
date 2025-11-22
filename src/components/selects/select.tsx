@@ -25,9 +25,10 @@ type Props = {
     placeholder?: string;
     status?: Status;
     disabled?: boolean;
+    editable?: boolean;
 };
 
-const Select = forwardRef<View, Props>(({ options, value, onSelect, disabled, label, placeholder = "Selecionar...", status = "default" }, ref) => {
+const Select = forwardRef<View, Props>(({ options, value, editable = true, onSelect, disabled, label, placeholder = "Selecionar...", status = "default" }, ref) => {
     const { getDefaultColors } = useThemeContext();
     const { colors } = getDefaultColors();
 
@@ -56,7 +57,7 @@ const Select = forwardRef<View, Props>(({ options, value, onSelect, disabled, la
                             ? colors.grayMedium
                             : backgroundColor,
                         borderColor: borderColorMap[status],
-                        opacity: disabled ? 0.5 : 1,
+                        opacity: disabled  || editable ? 0.7 : 1,
                     },
                 ]}
             >

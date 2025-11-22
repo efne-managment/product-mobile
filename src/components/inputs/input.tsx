@@ -11,7 +11,7 @@ type Props = TextInputProps & {
 };
 
 const Input = forwardRef<TextInput, Props>(
-  ({ style, status = "default", numberOfLines = 1, multiline, label, ...rest }, ref) => {
+  ({ style, status = "default", numberOfLines = 1, multiline, label, editable = true, ...rest }, ref) => {
     const { getDefaultColors } = useThemeContext();
     const { colors } = getDefaultColors();
 
@@ -34,6 +34,7 @@ const Input = forwardRef<TextInput, Props>(
         {...rest}
         multiline={numberOfLines > 1 || multiline}
         placeholderTextColor={placeholderColor}
+        editable={editable}
         onContentSizeChange={(e) => {
           const newHeight = e.nativeEvent.contentSize.height + 10;  
           setInputHeight(Math.max(45, newHeight));
@@ -45,6 +46,7 @@ const Input = forwardRef<TextInput, Props>(
             color: colors.text,
             borderColor: borderColorMap[status],
             // height: inputHeight,
+            opacity: editable ? 0.7 : 1,
           },
           style,
         ]}
