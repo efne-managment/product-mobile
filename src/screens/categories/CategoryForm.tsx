@@ -8,7 +8,7 @@ import { ScrollView } from 'react-native';
 import { Formik } from 'formik';
 import { saveCategorySchema } from '@/validators/saveCategorySchema';
 import { CategoryType } from '@/types/category';
-import { Button, IconButton, Input, Layout, SectionDivider, Text } from '@/components';
+import { Button, IconButton, Input, Layout, SectionDivider, Select, Text } from '@/components';
 import { useThemeContext } from '@/context/ThemeContext';
 
 type Props = {
@@ -18,11 +18,11 @@ type Props = {
   loading: boolean
 }
 
-type newCategoryScreenProp = NativeStackNavigationProp<RoutesParamList>;
+type ScreenNavigationProp = NativeStackNavigationProp<RoutesParamList>;
 
-export default function CategoryForm({ initialValues, handleSubmit, loading = false }: Props) {
+export default function CategoryForm({ initialValues, handleSubmit, loading = false, mode }: Props) {
 
-  const navigation = useNavigation<newCategoryScreenProp>();
+  const navigation = useNavigation<ScreenNavigationProp>();
   const [openModal, setOpenModal] = React.useState(false);
   const [selectedIndex, setSelectedIndex] = React.useState<number | null>(null);
   const { getDefaultColors } = useThemeContext();
@@ -59,6 +59,25 @@ export default function CategoryForm({ initialValues, handleSubmit, loading = fa
                 />
                 {errors.name && <Text status="danger">{errors.name}</Text>}
               </Layout>
+              {
+                mode === 'edit' && (
+                  <Layout style={styles.containerInput}>
+                    <Select
+                      label="Status"
+                      value={values.status}
+                      options={[
+                        { label: 'Ativo', value: 'Ativo' },
+                        { label: 'Inativo', value: 'Inativo' },
+                      ]}
+                      onSelect={
+                        (value) => setFieldValue('status', value)
+                      }
+                      status={errors.status ? "danger" : touched.status ? "success" : "default"}
+                    />
+                    {errors.status && <Text status="danger">{errors.status}</Text>}
+                  </Layout>
+                )
+              }
               <Button title=" Adicionar dia e horário de treino" size='medium' status='success' onPress={() => setOpenModal(true)} style={styles.button} />
 
             </Layout>

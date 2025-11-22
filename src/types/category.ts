@@ -16,8 +16,8 @@ export type CategoryType = {
     status: "ativo" | "inativo",
     totalAthletes: number,
     trainingDays: TrainingDayType[],
-    createdAt?: Timestamp,
-    updatedAt?: string,
+    createdAt?: Date,
+    updatedAt?: Date,
 }
 
 export type CategoriesContextType = {
@@ -27,4 +27,9 @@ export type CategoriesContextType = {
     getOneCategory: (id: string) => Promise<CategoryType | undefined>,
     editCategory: (data: CategoryType, id: string) => Promise<void>,
     deleteCategory: (id: string) => Promise<void>,
+}
+
+export type CategoryParam = Omit<CategoryType, 'createdAt' | 'updatedAt'> & {
+    createdAt?: string,
+    updatedAt?: string,
 }

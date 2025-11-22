@@ -7,10 +7,10 @@ import { useCategoriesContext } from '@/context/CategoriesContext';
 import { CategoryType } from '@/types/category';
 import CategoryForm from './CategoryForm';
 
-type newCategoryScreenProp = NativeStackNavigationProp<RoutesParamList, "NewCategory">;
+type ScreenNavigationProp = NativeStackNavigationProp<RoutesParamList, "NewCategory">;
 
 export default function NewCategoryScreen() {
-  const navigation = useNavigation<newCategoryScreenProp>();
+  const navigation = useNavigation<ScreenNavigationProp>();
   const { createCategory } = useCategoriesContext();
   
   const [loading, setLoading] = React.useState(false);

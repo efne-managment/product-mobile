@@ -48,7 +48,7 @@ type Props = {
   loading: boolean;
 };
 
-type newAthleteScreenProp = NativeStackNavigationProp<RoutesParamList>;
+type ScreenNavigationProp  = NativeStackNavigationProp<RoutesParamList>;
 
 export default function AthleteForm({
   initialValues,
@@ -57,7 +57,7 @@ export default function AthleteForm({
   categories = [],
   mode,
 }: Props) {
-  const navigation = useNavigation<newAthleteScreenProp>();
+  const navigation = useNavigation<ScreenNavigationProp>();
 
   const photoRef = useRef<View>(null);
   const nameRef = useRef<TextInput>(null);
