@@ -19,10 +19,11 @@ export async function getAllCategoriesFirebase() {
         const querySnapshot = await getDocs(categoriesCollection);
 
         const data: CategoryType[] = querySnapshot.docs.map((doc) => {
-       
             return { 
                 id: doc.id,
                 ...doc.data(),
+                createdAt: doc.data().createdAt ? new Date(doc.data().createdAt.seconds * 1000) : null,
+                updatedAt: doc.data().updatedAt ? new Date(doc.data().updatedAt.seconds * 1000) : null,
             } as CategoryType;
         });
 

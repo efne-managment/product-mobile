@@ -60,7 +60,6 @@ export async function createAthleteFirebase(data: AthleteType) {
 
         const athleteRef = doc(collection(db, dbName)); // cria o doc com ID automático
         const categoryRef = doc(db, "Categories", data.category);
-
         const dataToSave = {
             ...data,
             photo: photoURL,
