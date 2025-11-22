@@ -50,7 +50,7 @@ export const customDarkTheme: ThemeObject = {
     warning: "#FFE484",
     warningLight: "#F4C430",
 
-    grayLight: "#ddddd",
+    grayLight: "#ddd",
     grayDark: "#202020",
     grayMedium: "#707070",
     grayDarker: "#B2B2B2",
@@ -60,11 +60,11 @@ export const customDarkTheme: ThemeObject = {
     black: "#000000",
 
     text: "#FFFFFF",
-    textButton: "#000000",
+    textButton: "#ffffffff",
     inputBackground: "#4D4D4D",
     placeholderColor: "#B2B2B2",
     modalBackground: "#1C1C1E",
 
-    background: "#121212",
+    background: "#2f373fff",
   }
 };
