@@ -1,10 +1,25 @@
 {
   "compilerOptions": {
-    "jsx": "react-jsx",
+    "jsx": "react-native",
     "strict": true,
-    "baseUrl": ".",
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "baseUrl": "./",
     "paths": {
-      "@/*": ["src/*"],
-    },
+      "@/*": ["./src/*"],
+      "@/navigation/*": ["./src/navigation/*"],
+      "@/components/*": ["./src/components/*"],
+      "@/constants/*": ["./src/constants/*"],
+      "@/context/*": ["./src/context/*"],
+      "@/screens/*": ["./src/screens/*"],
+      "@/validators/*": ["./src/validators/*"],
+      "@/types/*": ["./src/types/*"],
+      "@/hooks/*": ["./src/hooks/*"],
+      "@/firebase/*": ["./src/firebase/*"],
+      "@/assets/*": ["./assets/*"]
+    }
   },
+  "include": ["env.d.ts", "src/**/*"],
+  "extends": "expo/tsconfig.base"
 }
