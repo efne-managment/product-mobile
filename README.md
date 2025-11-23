@@ -15,9 +15,9 @@ Este é o repositório oficial do **App Nova Esperança**, um aplicativo mobile 
 
 ## 🔧 Funcionalidades do App
 
-- Cadastro e gerenciamento de atletas
-- Organização por categorias
-- Controle de frequência nos treinos
+- Cadastro e gerenciamento de atletas ✔️
+- Organização por categorias ✔️
+- Controle de frequência nos treinos ✔️
 - Gerenciamento de estoque
 - Controle de entradas e saídas financeiras
 - Autenticação de usuários
