@@ -21,7 +21,7 @@ import {
 } from "@/constants/defaultValues";
 import saveAthleteSchema from "@/validators/saveAthleteSchema";
 import { useNavigation } from "@react-navigation/native";
-import styles from "./styles";
+import styles from "../styles";
 import { useRef } from "react";
 import { TouchableWithoutFeedback } from "react-native-gesture-handler";
 import { Image } from "expo-image";
@@ -203,7 +203,7 @@ export default function AthleteForm({
                     source={
                       values.photo
                         ? { uri: values.photo }
-                        : require("../../../assets/person_default.jpg")
+                        : require("../../../../assets/person_default.jpg")
                     }
                     style={styles.image}
                   />

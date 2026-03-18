@@ -4,7 +4,7 @@ import Loading from "@/screens/default/loading";
 import { AthleteParam, AthleteType } from "@/types/athlete";
 import { CategoryParam, CategoryType } from "@/types/category";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import DetailsAthleteScreen from "@/screens/athetes/DetailsAthleteScreen";
+import DetailsAthleteScreen from "@/screens/athetes/Details/DetailsAthleteScreen";
 import GlobalRoutes from "./BottomNavigation";
 import { FrequencyParam, FrequencyType } from "@/types/frequency";
 

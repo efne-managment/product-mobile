@@ -17,17 +17,14 @@ const ModalOpenPhoto: React.FC<OpenPhotoProps> = ({ uri, visible, setVisible }) 
             animationType="slide"
             transparent
         >
-            <Pressable
-                onPress={() => setVisible(false)}
-                style={styles.overlay}
-            ><Text style={{ color: 'white', fontSize: 18, fontWeight: 'bold', width: "100%", textAlign: 'right' }}>X</Text></Pressable>
+          
             <Layout style={styles.centeredView}>
                 <Layout style={styles.modalView}>
                     <Image
                         source={{ uri }}
-                        style={{width: "90%", height: "90%", objectFit: 'cover', }}
+                        style={{width: "100%", height: "80%", objectFit: 'contain', }}
                     />
-                    <Button title='Fechar' onPress={() => setVisible(false)} size='small' />
+                    <Button title='Fechar' onPress={() => setVisible(false)} size='small' style={{marginTop: 50}}/>
                 </Layout>
             </Layout>
 

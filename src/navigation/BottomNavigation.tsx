@@ -6,9 +6,9 @@ import Octicons from '@expo/vector-icons/Octicons';
 
 // SCREENS
 import HomeScreen from "@/screens/athetes/AthletesScreen";
-import DetailsAthleteScreen from "@/screens/athetes/DetailsAthleteScreen";
+import DetailsAthleteScreen from "@/screens/athetes/Details/DetailsAthleteScreen";
 import ListAthletesScreen from "@/screens/athetes/AthletesScreen";
-import NewAthleteScreen from "@/screens/athetes/NewAthleteScreen";
+import NewAthleteScreen from "@/screens/athetes/Form/NewAthleteScreen";
 import ListCategoriesScreen from "@/screens/categories/CategorieesScreen";
 import DetailsCategoryScreen from "@/screens/categories/DetailsCategoryScreen";
 import NewCategoryScreen from "@/screens/categories/NewCategoryScreen";
@@ -21,7 +21,7 @@ import NewFrequencyScreen from "@/screens/frequencies/NewFrequencyScreen";
 import SettingsScreen from "@/screens/settings/SettingsScreen";
 import { Text } from "@/components";
 import EditCategoryScreen from "@/screens/categories/EditCategoryScreen";
-import EditAthleteScreen from "@/screens/athetes/EditAthleteScreen";
+import EditAthleteScreen from "@/screens/athetes/Form/EditAthleteScreen";
 import EditFrequencyScreen from "@/screens/frequencies/EditFrequencyScreen";
 
 const TabIcon = (props: any) => <Octicons {...props} name={props.name} />;
