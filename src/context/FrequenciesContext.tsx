@@ -1,5 +1,5 @@
 import { createFrequencyFirebase, deleteFrequencyFirebase, editFrequencyFirebase, getAllFrequenciesFirebase, getFrequencyFirebase } from "@/firebase/frequencies";
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useCallback, useContext, useEffect, useState } from "react";
 import { useAuth } from "./AuthContext";
 import { FrequenciesContextType, FrequencyType } from "@/types/frequency";
 
@@ -16,7 +16,7 @@ function FrequenciesProvider({ children }: any) {
     const [frequencies, setFrequencies] = useState<FrequencyType[]>([]);
     const { isAuthenticated, loading } = useAuth();
 
-    const getAllFrequencies = async () => {
+    const getAllFrequencies = useCallback(async () => {
         try {
             const frequenciesFirebase = await getAllFrequenciesFirebase();
 
@@ -27,7 +27,7 @@ function FrequenciesProvider({ children }: any) {
         } catch (e: any) {
             throw new Error(e.message)
         }
-    }
+    }, [])
 
     const getOneFrequency = async (id: string) => {
         try {

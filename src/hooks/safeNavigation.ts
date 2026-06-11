@@ -18,7 +18,12 @@ export function useSafeNavigate() {
     screen: RouteName,
     params?: RoutesParamList[RouteName]
   ) {
-    navigation.navigate(screen, params as any);
+    if (params === undefined) {
+      navigation.navigate(screen as any);
+      return;
+    }
+
+    navigation.navigate(screen as any, params as any);
   }
 
   return navigateSafe;

@@ -1,6 +1,6 @@
 import { addDoc, collection, deleteDoc, doc, getDoc, getDocs, getFirestore, setDoc } from "firebase/firestore";
 import { app } from "@/firebase/config";
-import { OutType, PaymentType } from "@/constants/types";
+import { OutType, PaymentType } from "@/types/payments";
 
 const db = getFirestore(app)
 

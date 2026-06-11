@@ -45,8 +45,7 @@ const Input = forwardRef<TextInput, Props>(
             backgroundColor,
             color: colors.text,
             borderColor: borderColorMap[status],
-            // height: inputHeight,
-            opacity: editable ? 0.7 : 1,
+            opacity: editable ? 1 : 0.55,
           },
           style,
         ]}
@@ -61,9 +60,10 @@ const styles = StyleSheet.create({
   input: {
     width: "100%",
     paddingHorizontal: 16,
-    borderRadius: 25,
+    borderRadius: 14,
     fontSize: 16,
     borderWidth: 1.5,
+    minHeight: 48,
   },
 });
 

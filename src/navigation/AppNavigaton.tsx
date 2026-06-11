@@ -7,8 +7,11 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import DetailsAthleteScreen from "@/screens/athetes/DetailsAthleteScreen";
 import GlobalRoutes from "./BottomNavigation";
 import { FrequencyParam, FrequencyType } from "@/types/frequency";
+import { FinancialMovementParam, MonthlyFeePresetParam } from "@/types/financial";
 
 export type RoutesParamList = {
+  Dashboard: undefined;
+
   // Auth Routes
   Login: undefined;
   Register: undefined;
@@ -34,9 +37,9 @@ export type RoutesParamList = {
 
   // Financial Routes
   ListFinancials: undefined;
-  DetailsFinancial: undefined;
-  NewFinancial: undefined;
-  EditFinancial: undefined;
+  DetailsFinancial: { financial: FinancialMovementParam };
+  NewFinancial: { monthlyFee?: MonthlyFeePresetParam } | undefined;
+  EditFinancial: { financial: FinancialMovementParam };
 
   // Settings Routes
   Settings: undefined;

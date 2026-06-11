@@ -1,7 +1,20 @@
 import { maxDate, minDate } from "@/constants/defaultValues";
 import * as yup from "yup";
 
-const saveAthleteSchema = yup.object().shape({
+type SaveAthleteSchemaOptions = {
+  minBirthYear?: number;
+  maxBirthYear?: number;
+  minAge?: number;
+  maxAge?: number;
+};
+
+export function createSaveAthleteSchema({
+  minBirthYear = minDate,
+  maxBirthYear = maxDate,
+  minAge = 4,
+  maxAge = 15,
+}: SaveAthleteSchemaOptions = {}) {
+  return yup.object().shape({
   photo: yup.string().optional(),
   name: yup.string().required("O nome é obrigatório"),
   gender: yup
@@ -12,8 +25,8 @@ const saveAthleteSchema = yup.object().shape({
   father: yup.string().required("O nome do responsável é obrigatório"),
   born: yup
     .date()
-    .min(minDate, "A idade máxima é de 15 anos")
-    .max(maxDate, "A data mínima é de 4 anos")
+    .min(new Date(minBirthYear, 0, 1), `A idade máxima é de ${maxAge} anos`)
+    .max(new Date(maxBirthYear, 11, 31), `A idade mínima é de ${minAge} anos`)
     .required("A data de nascimento é obrigatória"),
   height: yup
     .number()
@@ -23,6 +36,10 @@ const saveAthleteSchema = yup.object().shape({
     .number()
     .required("O peso é obrigatório")
     .typeError("O peso deve ser um número"),
+  jerseyNumber: yup
+    .string()
+    .optional()
+    .matches(/^\d{0,3}$/, "O número da camisa deve ter até 3 dígitos"),
   position: yup.string().required("A posição é obrigatória"),
   status: yup
     .mixed<"matriculado" | "ativo" | "inativo">()
@@ -49,6 +66,9 @@ const saveAthleteSchema = yup.object().shape({
       .required("O CEP é obrigatório")
       .matches(/^\d{2}\.\d{3}-\d{3}$/, "O CEP deve estar no formato 00.000-000"),
   }),
-});
+  });
+}
+
+const saveAthleteSchema = createSaveAthleteSchema();
 
 export default saveAthleteSchema;

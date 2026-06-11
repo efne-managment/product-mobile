@@ -18,6 +18,7 @@ export const initialValuesAthlete: AthleteType = {
   gender: '',
   height: "",
   weight: "",
+  jerseyNumber: "",
   position: "",
   photo: "",
   father: "",
@@ -85,7 +86,7 @@ export const initialValuesCategory: CategoryType = {
   name: "",
   status: "ativo",
   totalAthletes: 0,
-  trainingDays: []
+  trainingDays: [],
 };
 
 export const initialValuesFrequency = {
@@ -93,6 +94,7 @@ export const initialValuesFrequency = {
   category: "",
   date: new Date(),
   time: "",
+  notes: "",
 };
 
 export const positions = [

@@ -14,14 +14,13 @@ export default function SectionDivider({ title }: Props) {
 
   return (
     <Layout style={styles.container}>
-      <View style={[styles.line, { backgroundColor: colors.placeholderColor }]} />
       <Text
-        style={[{ marginHorizontal: 8, width:'50%', textAlign: 'center' }]}
-        variant="h3"
+        style={[styles.title, { color: colors.grayDarkest }]}
+        variant="h5"
       >
         {title}
       </Text>
-      <View style={[styles.line, { backgroundColor: colors.placeholderColor }]} />
+      <View style={[styles.line, { backgroundColor: colors.border }]} />
     </Layout>
   );
 }
@@ -30,11 +29,16 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: "row",
     alignItems: "center",
-    marginVertical: 16,
+    marginTop: 20,
+    marginBottom: 8,
+    gap: 12,
+    backgroundColor: "transparent",
+  },
+  title: {
+    flexShrink: 0,
   },
   line: {
     flex: 1,
-    height: 3,
-
+    height: 1,
   },
 });

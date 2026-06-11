@@ -57,6 +57,7 @@ export default function LoginScreen() {
               <Layout style={styles.containerForm}>
                 <Layout style={styles.containerInput}>
                   <Input
+                    label="E-mail"
                     placeholder="Seu e-mail"
                     returnKeyType="next"
                     onSubmitEditing={() => passwordRef.current?.focus()}
@@ -71,6 +72,7 @@ export default function LoginScreen() {
 
                 <Layout style={styles.containerInput}>
                   <Input
+                    label="Senha"
                     placeholder="Sua senha"
                     secureTextEntry
                     ref={passwordRef}
@@ -79,7 +81,7 @@ export default function LoginScreen() {
                     value={values.password}
                     onChangeText={handleChange('password')}
                     onBlur={handleBlur('password')}
-                    status={errors.username ? "danger" : touched.password ? "success" : "default"}
+                    status={errors.password ? "danger" : touched.password ? "success" : "default"}
                   />
                   {errors.password ? <Text status="danger">{errors.password}</Text> : null}
                 </Layout>

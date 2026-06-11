@@ -1,12 +1,11 @@
-import ModalOpenPhoto from "@/components/modals/modalOpenPhoto";
 import { Image } from "expo-image";
 import React from "react";
-import { Pressable, StyleSheet } from "react-native";
+import { Pressable, StyleSheet, View } from "react-native";
 import { Layout } from "../views";
 import { Text } from "../texts";
-import { Button } from "../buttons";
 import { useThemeContext } from "@/context/ThemeContext";
 import { CallAthlete } from "@/types/frequency";
+import Octicons from "@expo/vector-icons/Octicons";
 
 type Props = {
   data: CallAthlete;
@@ -23,7 +22,6 @@ export default function FrequencyAthleteCard({
   showMarkPresenceButton = true,
   editable = true,
 }: Props) {
-  const [visibleModal, setVisibleModal] = React.useState(false);
   const uriImage = data?.athlete.photoURL
     ? { uri: data.athlete.photoURL }
     : require("../../../assets/person_default.jpg");
@@ -46,98 +44,103 @@ export default function FrequencyAthleteCard({
   }
 
   return (
-    <Layout style={[styles.container]}>
-      <Layout style={styles.containerLeft}>
-        <Pressable
-          style={styles.image}
-          onPress={() => {
-            if (data.athlete.photoURL) setVisibleModal(true);
-          }}
-        >
+    <Pressable
+      accessibilityRole="button"
+      accessibilityLabel={`${displayName}, ${present ? "presente" : "ausente"}`}
+      accessibilityState={{ selected: present, disabled: !editable }}
+      onPress={editable ? onTogglePresent : undefined}
+      style={[styles.container, { backgroundColor: colors.card, borderColor: present ? colors.secondary : colors.border }]}
+    >
+      <View style={styles.avatarWrap}>
+        {data.athlete.photoURL ? (
           <Image style={styles.image} source={uriImage} />
-        </Pressable>
-      </Layout>
+        ) : (
+          <View style={[styles.initialsAvatar, { backgroundColor: colors.primary }]}>
+            <Text variant="labelBold" style={styles.initialsText}>
+              {getInitials(data.athlete.name)}
+            </Text>
+          </View>
+        )}
+      </View>
 
       <Layout style={styles.containerRight}>
-        <Text variant="h5" style={{ width: "100%" }}>
+        <Text variant="labelBold" style={{ width: "100%" }} numberOfLines={1}>
           {displayName}
         </Text>
 
         {showMarkPresenceButton && (
-          <Button
-            title={
-              present ? "Presente" : editable ? "Marcar presença" : "Ausente"
-            }
-            size="small"
-            status={present ? "success" : "basic"}
-            style={{ width: "100%" }}
-            onPress={editable ? onTogglePresent : undefined}
-          />
+          <View style={[styles.presenceBadge, { backgroundColor: present ? colors.successLight : colors.surfaceAlt }]}>
+            <Octicons name={present ? "check-circle" : "circle"} size={15} color={present ? colors.success : colors.mutedText} />
+            <Text variant="labelBold" style={{ color: present ? colors.success : colors.mutedText, fontSize: 12 }}>
+              {present ? "Presente" : editable ? "Marcar presença" : "Ausente"}
+            </Text>
+          </View>
         )}
       </Layout>
-
-      <ModalOpenPhoto
-        setVisible={setVisibleModal}
-        visible={visibleModal}
-        uri={data.athlete.photoURL || ""}
-      />
-    </Layout>
+    </Pressable>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flexDirection: "row",
-    width: "95%",
-    height: 120,
-    marginLeft: 10,
+    width: "100%",
+    minHeight: 78,
     alignItems: "center",
-    paddingVertical: 10,
-    paddingHorizontal: 20,
+    paddingVertical: 12,
+    paddingHorizontal: 12,
     shadowColor: "#000",
-    borderWidth: 0,
+    borderWidth: 1,
     shadowOffset: {
       width: 0,
-      height: 2,
+      height: 1,
     },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 8,
-    marginVertical: 10,
-    borderRadius: 15,
+    shadowOpacity: 0.06,
+    shadowRadius: 8,
+    elevation: 2,
+    marginVertical: 6,
+    borderRadius: 16,
+    gap: 12,
   },
-  containerLeft: {
-    marginRight: 10,
-    alignItems: "center",
-    justifyContent: "center",
-    width: 100,
+  avatarWrap: {
+    width: 52,
+    height: 52,
   },
   containerRight: {
-    marginLeft: 10,
     flex: 1,
     flexDirection: "column",
-    justifyContent: "space-between",
-    gap: 10,
+    gap: 8,
+    backgroundColor: "transparent",
   },
   image: {
-    width: "100%",
-    height: 100,
-    borderRadius: 100,
+    width: 52,
+    height: 52,
+    borderRadius: 26,
     objectFit: "cover",
+  },
+  initialsAvatar: {
+    width: 52,
+    height: 52,
+    borderRadius: 26,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  initialsText: {
+    color: "#FFFFFF",
+  },
+  presenceBadge: {
+    alignSelf: "flex-start",
+    minHeight: 28,
+    borderRadius: 999,
+    paddingHorizontal: 10,
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 6,
   },
 });
 
-function calculateAge(born: Date): number {
-  const today = new Date();
-  let age = today.getFullYear() - born.getFullYear();
-
-  const hasHadBirthdayThisYear =
-    today.getMonth() > born.getMonth() ||
-    (today.getMonth() === born.getMonth() && today.getDate() >= born.getDate());
-
-  if (!hasHadBirthdayThisYear) {
-    age--;
-  }
-
-  return age;
+function getInitials(value: string) {
+  const parts = value.trim().split(/\s+/).filter(Boolean);
+  if (!parts.length) return "AT";
+  return parts.slice(0, 2).map((part) => part[0]).join("").toUpperCase();
 }

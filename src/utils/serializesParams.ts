@@ -1,5 +1,6 @@
 import { AthleteType } from "@/types/athlete";
 import { CategoryType } from "@/types/category";
+import { FinancialMovementType } from "@/types/financial";
 import { FrequencyType } from "@/types/frequency";
 import { safeDate } from "./safeDate";
 
@@ -53,4 +54,22 @@ export function deserializeCategory(data: any): CategoryType {
         createdAt: data.createdAt ? new Date(data.createdAt) : undefined,
         updatedAt: data.updatedAt ? new Date(data.updatedAt) : undefined,
     } as CategoryType;
+}
+
+export function serializeFinancialMovement(financial: FinancialMovementType) {
+    return {
+        ...financial,
+        date: safeDate(financial.date),
+        createdAt: safeDate(financial.createdAt),
+        updatedAt: safeDate(financial.updatedAt),
+    };
+}
+
+export function deserializeFinancialMovement(data: any): FinancialMovementType {
+    return {
+        ...data,
+        date: data.date ? new Date(data.date) : new Date(),
+        createdAt: data.createdAt ? new Date(data.createdAt) : undefined,
+        updatedAt: data.updatedAt ? new Date(data.updatedAt) : undefined,
+    } as FinancialMovementType;
 }

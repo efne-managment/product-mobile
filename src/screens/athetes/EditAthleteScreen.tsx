@@ -2,7 +2,6 @@ import { RoutesParamList } from "@/navigation/AppNavigaton";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { useState } from "react";
 import { ToastAndroid } from "react-native";
-import { initialValuesAthlete } from "@/constants/defaultValues";
 import { useAthletesContext } from "@/context/AthletesContext";
 import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
 import styles from "./styles";

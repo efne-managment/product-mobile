@@ -2,69 +2,85 @@ import { ThemeObject } from "@/types/theme";
 
 export const customLightTheme: ThemeObject = {
   colors: {
-    primary: "#0032A0",
-    primaryLight: "#80B8F8",
+    primary: "#003C6E",
+    primaryLight: "#D7EAF8",
+    secondary: "#278733",
+    secondaryLight: "#E8F6EA",
+    accent: "#D9A514",
+    accentLight: "#FFF6D8",
 
-    danger: "#ED1C24",
-    dangerLight: "#F67375",
+    danger: "#D92D20",
+    dangerLight: "#FEE4E2",
 
-    success: "#007D57",
-    successLight: "#26C481",
+    success: "#278733",
+    successLight: "#E8F6EA",
 
-    warning: "#F4C430",
-    warningLight: "#FFE484",
+    warning: "#D9A514",
+    warningLight: "#FFF6D8",
 
-    grayLight: "#E9E9E9",
-    grayDark: "#B2B2B2",
-    grayMedium: "#707070",
-    grayDarker: "#4D4D4D",
-    grayDarkest: "#333333",
+    grayLight: "#EEF3F6",
+    grayDark: "#C9D1D8",
+    grayMedium: "#6D7A86",
+    grayDarker: "#334155",
+    grayDarkest: "#0F171F",
 
     white: "#FFFFFF",
     black: "#000000",
 
     // Texto principal em preto
-    text: "#000000",
+    text: "#050C13",
     // Texto de botões em branco
     textButton: "#FFFFFF",
 
-    inputBackground: "#E9E9E9",
-    placeholderColor: "#707070",
+    inputBackground: "#FFFFFF",
+    placeholderColor: "#6D7A86",
     modalBackground: "#FFFFFF",
 
-    background: "#FFFFFF",
+    background: "#F2F6F8",
+    card: "#FFFFFF",
+    border: "#DBDEE1",
+    mutedText: "#6D7A86",
+    surfaceAlt: "#EAF1F5",
   }
 };
 
 export const customDarkTheme: ThemeObject = {
   colors: {
-    primary: "#80B8F8",
-    primaryLight: "#0032A0",
+    primary: "#0F74C5",
+    primaryLight: "#123A5A",
+    secondary: "#35A144",
+    secondaryLight: "#12351A",
+    accent: "#B68700",
+    accentLight: "#3C310F",
 
-    danger: "#F67375",
-    dangerLight: "#ED1C24",
+    danger: "#F97066",
+    dangerLight: "#4A1715",
 
-    success: "#26C481",
-    successLight: "#007D57",
+    success: "#35A144",
+    successLight: "#12351A",
 
-    warning: "#FFE484",
-    warningLight: "#F4C430",
+    warning: "#EBC447",
+    warningLight: "#3C310F",
 
-    grayLight: "#ddd",
-    grayDark: "#202020",
-    grayMedium: "#707070",
-    grayDarker: "#B2B2B2",
-    grayDarkest: "#E9E9E9",
+    grayLight: "#17212B",
+    grayDark: "#263340",
+    grayMedium: "#A7B0BA",
+    grayDarker: "#D7DEE5",
+    grayDarkest: "#ECEFF1",
 
     white: "#FFFFFF",
     black: "#000000",
 
     text: "#FFFFFF",
     textButton: "#ffffffff",
-    inputBackground: "#4D4D4D",
-    placeholderColor: "#B2B2B2",
-    modalBackground: "#1C1C1E",
+    inputBackground: "#0B121A",
+    placeholderColor: "#A7B0BA",
+    modalBackground: "#0B121A",
 
-    background: "#2f373fff",
+    background: "#03080F",
+    card: "#0B121A",
+    border: "#212A33",
+    mutedText: "#A7B0BA",
+    surfaceAlt: "#111B25",
   }
 };

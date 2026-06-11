@@ -10,6 +10,7 @@ type Props = {
   checked: boolean;
   onChange: (checked: boolean) => void;
   status?: Status;
+  accessibilityLabel?: string;
 };
 
 export default function Checkbox({
@@ -17,6 +18,7 @@ export default function Checkbox({
   checked,
   onChange,
   status = "default",
+  accessibilityLabel,
 }: Props) {
   const { getDefaultColors } = useThemeContext();
   const { colors } = getDefaultColors();
@@ -31,6 +33,9 @@ export default function Checkbox({
 
   return (
     <Pressable
+      accessibilityRole="checkbox"
+      accessibilityLabel={accessibilityLabel ?? label}
+      accessibilityState={{ checked }}
       style={styles.container}
       onPress={() => onChange(!checked)}
       hitSlop={10}

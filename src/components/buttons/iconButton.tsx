@@ -14,6 +14,7 @@ export default function IconButton({
   iconColor,
   status = "primary",
   appearance = "default",
+  disabled,
   ...rest
 }: Props) {
   const { getDefaultColors } = useThemeContext();
@@ -45,9 +46,13 @@ export default function IconButton({
   return (
     <Pressable
       {...rest}
+      accessibilityRole="button"
+      accessibilityLabel={rest.accessibilityLabel ?? iconName}
+      accessibilityState={{ disabled: Boolean(disabled) }}
+      disabled={disabled}
       style={[
         styles.button,
-        {width:40, height:40, backgroundColor, borderColor, borderWidth: appearance === "outline" ? 1 : 0 }
+        {width:40, height:40, backgroundColor, borderColor, borderWidth: appearance === "outline" ? 1 : 0, opacity: disabled ? 0.55 : 1 }
       ]}
     >
      <Icon iconName={iconName} color={iconColor} />

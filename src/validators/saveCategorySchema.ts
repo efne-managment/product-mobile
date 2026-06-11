@@ -3,7 +3,7 @@ import * as Yup from "yup";
 export const saveCategorySchema = Yup.object().shape({
   id: Yup.string().optional(),
   name: Yup.string().required('O nome é obrigatório'),
-  status: Yup.string().oneOf(['Ativo', 'Inativo'], 'Status inválido').required('O status é obrigatório'),
+  status: Yup.string().oneOf(['ativo', 'inativo'], 'Status inválido').required('O status é obrigatório'),
   trainingDays: Yup.array().of(
     Yup.object().shape({
       day: Yup.string().required('O dia é obrigatório'),

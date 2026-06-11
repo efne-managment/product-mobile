@@ -2,6 +2,7 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Octicons from '@expo/vector-icons/Octicons';
+import { useThemeContext } from "@/context/ThemeContext";
 
 
 // SCREENS
@@ -15,6 +16,7 @@ import NewCategoryScreen from "@/screens/categories/NewCategoryScreen";
 import ListFinancialsScreen from "@/screens/financial/FinancialsScreen";
 import DetailsFinancialScreen from "@/screens/financial/DetailsFinancialScreen";
 import NewFinancialScreen from "@/screens/financial/NewFinancialScreen";
+import EditFinancialScreen from "@/screens/financial/EditFinancialScreen";
 import ListFrequenciesScreen from "@/screens/frequencies/FrequenciesScreen";
 import DetailsFrequencyScreen from "@/screens/frequencies/DetailsFrequencyScreen";
 import NewFrequencyScreen from "@/screens/frequencies/NewFrequencyScreen";
@@ -23,32 +25,45 @@ import { Text } from "@/components";
 import EditCategoryScreen from "@/screens/categories/EditCategoryScreen";
 import EditAthleteScreen from "@/screens/athetes/EditAthleteScreen";
 import EditFrequencyScreen from "@/screens/frequencies/EditFrequencyScreen";
+import DashboardScreen from "@/screens/dashboard/DashboardScreen";
 
 const TabIcon = (props: any) => <Octicons {...props} name={props.name} />;
-const TabTitle = (props: any) => <Text variant="label" status="basic">{props.title}</Text>;
+const TabTitle = (props: any) => <Text variant="label" style={{ color: props.color, fontSize: 11, fontWeight: "600" }}>{props.title}</Text>;
 
 const Tab = createBottomTabNavigator();
 
 function Tabs() {
+  const { getDefaultColors } = useThemeContext();
+  const { colors } = getDefaultColors();
+
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({
         headerShown: false,
         tabBarStyle: {
-          height: 70,
-          borderTopWidth: 0,
-          backgroundColor: '#fff',
-          elevation: 10,
+          height: 76,
+          paddingTop: 8,
+          paddingBottom: 10,
+          borderTopWidth: 1,
+          borderTopColor: colors.border,
+          backgroundColor: colors.card,
+          elevation: 8,
+        },
+        tabBarItemStyle: {
+          borderRadius: 14,
+          marginHorizontal: 2,
         },
         tabBarIcon: ({ focused, color, size }) => {
           let iconName;
 
-          if (route.name === 'Athletes') {
+          if (route.name === 'Dashboard') {
+            iconName = 'graph';
+          } else if (route.name === 'Athletes') {
             iconName = 'people';
           } else if (route.name === 'Categories') {
-            iconName = 'tag';
+            iconName = 'repo';
           } else if (route.name === 'Financial') {
-            iconName = 'book';
+            iconName = 'credit-card';
           } else if (route.name === 'Frequencies') {
             iconName = 'checklist';
           } else if (route.name === 'Settings') {
@@ -58,15 +73,23 @@ function Tabs() {
           return (
             <TabIcon
               name={iconName}
-              color={focused ? '#0a7ea4' : '#687076'}
+              color={focused ? colors.primary : colors.mutedText}
               size={21}
             />
           );
         },
-        tabBarActiveTintColor: '#0a7ea4',
-        tabBarInactiveTintColor: '#687076',
+        tabBarActiveTintColor: colors.primary,
+        tabBarInactiveTintColor: colors.mutedText,
       })}
     >
+      <Tab.Screen
+        name="Dashboard"
+        component={DashboardScreen}
+        options={{
+          tabBarLabel: ({ color }) =>
+            <TabTitle title="Início" color={color} />
+        }}
+      />
       <Tab.Screen
         name="Athletes"
          component={ListAthletesScreen} options={{ headerShown: true, headerTitle: 'Atletas', headerTitleAlign: 'center', 
@@ -83,14 +106,15 @@ function Tabs() {
             <TabTitle title="Categorias" color={color} />
         }}
       />
-      {/* <Tab.Screen
+      <Tab.Screen
         name="Financial"
-        component={FinancialStackScreen}
+        component={ListFinancialsScreen}
         options={{
+          headerShown: true, headerTitle: 'Financeiro', headerTitleAlign: 'center',
           tabBarLabel: ({ color }) =>
             <TabTitle title="Financeiro" color={color} />
         }}
-      />*/}
+      />
       <Tab.Screen
         name="Frequencies"
         component={ListFrequenciesScreen}
@@ -161,10 +185,25 @@ function GlobalRoutes() {
         component={DetailsFrequencyScreen}
         options={{ headerShown: true, headerTitle: 'Detalhes da frequência', headerTitleAlign: 'center' }} />
 
-        <RootStack.Screen
+      <RootStack.Screen
         name="EditFrequency"
         component={EditFrequencyScreen}
         options={{ headerShown: true, headerTitle: 'Edição da frequência', headerTitleAlign: 'center' }} />
+
+      {/* Financeiro */}
+        <RootStack.Screen
+        name="NewFinancial"
+        component={NewFinancialScreen}
+        options={{ headerShown: true, headerTitle: 'Nova movimentação', headerTitleAlign: 'center' }} />
+       <RootStack.Screen
+        name="DetailsFinancial"
+        component={DetailsFinancialScreen}
+        options={{ headerShown: true, headerTitle: 'Detalhes financeiros', headerTitleAlign: 'center' }} />
+
+        <RootStack.Screen
+        name="EditFinancial"
+        component={EditFinancialScreen}
+        options={{ headerShown: true, headerTitle: 'Edição financeira', headerTitleAlign: 'center' }} />
     </RootStack.Navigator>
 
   )

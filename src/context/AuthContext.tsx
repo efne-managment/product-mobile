@@ -1,11 +1,18 @@
 import { initialValuesUser } from '@/constants/defaultValues';
-import { loginFirebase, registerFirebase } from '@/firebase/authentication';
+import { loginFirebase, logoutFirebase, registerFirebase } from '@/firebase/authentication';
 import { getProfile } from '@/firebase/users';
 import { AuthContextType, loginType, registerType, userType } from '@/types/authentication';
 import * as SecureStore from 'expo-secure-store';
 import { getAuth, onAuthStateChanged, User } from 'firebase/auth';
 import { createContext, useContext, useEffect, useState } from "react";
 import { Alert } from "react-native"
+
+const STORAGE_KEYS = {
+    keepConnected: 'efne-keepConnected',
+    isFirstAccess: 'efne-isFirstAccess',
+    legacyIsFirstAccess: 'efne-isFirsAccess',
+    legacyUser: 'efne-user',
+};
 
 const AuthContext = createContext<AuthContextType>({
     loading: true,
@@ -32,7 +39,9 @@ function AuthProvider({ children }: any) {
 
     const loadStoredData = async (firebaseUser: User) => {
         try {
-            const isFirstAccessStored = await SecureStore.getItemAsync('efne-isFirsAccess');
+            const isFirstAccessStored =
+                await SecureStore.getItemAsync(STORAGE_KEYS.isFirstAccess) ??
+                await SecureStore.getItemAsync(STORAGE_KEYS.legacyIsFirstAccess);
     
             const dataUser = await getProfile();
     
@@ -61,10 +70,13 @@ function AuthProvider({ children }: any) {
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(getAuth(), async (firebaseUser) => {
             if (firebaseUser) {
-                const keepConnectedStored = await SecureStore.getItemAsync('efne-keepConnected');
+                const keepConnectedStored = await SecureStore.getItemAsync(STORAGE_KEYS.keepConnected);
                 if (keepConnectedStored === 'true') {
                     setKeepConnected(true);
                     await loadStoredData(firebaseUser);
+                } else {
+                    setKeepConnected(false);
+                    setIsAuthenticated(false);
                 }
             }
             setLoading(false);
@@ -92,16 +104,17 @@ function AuthProvider({ children }: any) {
                     })
                     
                     if (keepConnected) {
-                        await SecureStore.setItemAsync('efne-keepConnected', JSON.stringify(true));
-                        await SecureStore.setItemAsync('efne-isFirsAccess', JSON.stringify(false));
-                        
+                        await SecureStore.setItemAsync(STORAGE_KEYS.keepConnected, 'true');
                         setKeepConnected(true);
+                    } else {
+                        await SecureStore.deleteItemAsync(STORAGE_KEYS.keepConnected);
+                        setKeepConnected(false);
                     }
                     
-                    await SecureStore.setItemAsync('efne-isFirsAccess', JSON.stringify(false));
+                    await SecureStore.setItemAsync(STORAGE_KEYS.isFirstAccess, 'false');
+                    await SecureStore.deleteItemAsync(STORAGE_KEYS.legacyIsFirstAccess);
+                    await SecureStore.deleteItemAsync(STORAGE_KEYS.legacyUser);
 
-
-                    await SecureStore.setItemAsync('efne-user', JSON.stringify(user));
                     setIsAuthenticated(true);
                     setIsFirstAccess(false);
 
@@ -124,7 +137,7 @@ function AuthProvider({ children }: any) {
             if (user) {
                 setIsFirstAccess(false);
 
-                await SecureStore.setItemAsync('efne-user', JSON.stringify({ username: username, name: name }));
+                await SecureStore.deleteItemAsync(STORAGE_KEYS.legacyUser);
             }
         } catch (e) {
             Alert.alert("Cadastro", "Não foi possível cadastrar. Tente novamente mais tarde.");
@@ -149,10 +162,14 @@ function AuthProvider({ children }: any) {
 
     const logout = async () => {
         try {
+            await logoutFirebase();
             setIsAuthenticated(false);
             setKeepConnected(false);
-            await SecureStore.deleteItemAsync('efne-user');
-            await SecureStore.deleteItemAsync('efne-keepConnected');
+            setUser(initialValuesUser);
+            await SecureStore.deleteItemAsync(STORAGE_KEYS.legacyUser);
+            await SecureStore.deleteItemAsync(STORAGE_KEYS.keepConnected);
+            await SecureStore.deleteItemAsync(STORAGE_KEYS.isFirstAccess);
+            await SecureStore.deleteItemAsync(STORAGE_KEYS.legacyIsFirstAccess);
         } catch (e) {
             Alert.alert("Logout", "Não foi possível deslogar. Tente novamente mais tarde.");
         }

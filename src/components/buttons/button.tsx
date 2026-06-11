@@ -1,4 +1,4 @@
-import { Pressable, StyleSheet, Text, PressableProps, DimensionValue, Dimensions} from "react-native";
+import { DimensionValue, Pressable, StyleSheet, Text, PressableProps } from "react-native";
 import { useThemeContext } from "@/context/ThemeContext";
 
 type SizeType = "tiny" | "small" | "semi" | "medium" | "large" | "full";
@@ -16,6 +16,7 @@ export default function Button({
   appearance = "default",
   size = "full",
   style,
+  disabled,
   ...rest
 }: Props) {
   const { getDefaultColors } = useThemeContext();
@@ -53,16 +54,13 @@ export default function Button({
   const borderColor =
     appearance === "outline" ? borderColorMap[status] : "transparent";
 
-    const screenWidth = Dimensions.get("window").width;
-
-  
-const buttonSizes = {
-  tiny: { width: screenWidth * 0.2, height: 32 },     // ícone ou botão menor
-  small: { width: screenWidth * 0.3, height: 36 },    // ação secundária
-  semi: { width: screenWidth * 0.4, height: 38 }, 
-  medium: { width: screenWidth * 0.5, height: 40 },   // ação normal
-  large: { width: screenWidth * 0.75, height: 48 },   // destaque
-  full: { width: screenWidth, height: 48 },           // ocupar a linha toda
+const buttonSizes: Record<SizeType, { width: DimensionValue; minWidth?: number; height: number }> = {
+  tiny: { width: "20%", minWidth: 72, height: 32 },
+  small: { width: "32%", minWidth: 104, height: 40 },
+  semi: { width: "46%", minWidth: 132, height: 44 },
+  medium: { width: "56%", minWidth: 160, height: 44 },
+  large: { width: "78%", minWidth: 220, height: 48 },
+  full: { width: "100%", height: 48 },
 };
     
     
@@ -72,9 +70,13 @@ const buttonSizes = {
   return (
     <Pressable
       {...rest}
+      accessibilityRole="button"
+      accessibilityLabel={rest.accessibilityLabel ?? title}
+      accessibilityState={{ disabled: Boolean(disabled) }}
+      disabled={disabled}
       style={(state) => [
         styles.button,
-        { ...selectedSize, backgroundColor, borderColor, borderWidth: appearance === "outline" ? 1 : 0 },
+        { ...selectedSize, backgroundColor, borderColor, borderWidth: appearance === "outline" ? 1 : 0, opacity: disabled ? 0.55 : 1 },
         typeof style === "function" ? style(state) : style,
       ]}
     >
@@ -86,7 +88,7 @@ const buttonSizes = {
 const styles = StyleSheet.create({
   button: {
     height: 45,
-    borderRadius: 25,
+    borderRadius: 14,
     alignItems: "center",
     justifyContent: "center",
   },

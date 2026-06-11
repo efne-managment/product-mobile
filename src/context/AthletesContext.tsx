@@ -1,5 +1,5 @@
 import { createAthleteFirebase, deleteAthleteFirebase, editAthleteFirebase, getAllAthletesFirebase } from "@/firebase/athletes";
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useCallback, useContext, useEffect, useState } from "react";
 import { useAuth } from "./AuthContext";
 import { AthletesTypeContext, AthleteType } from "@/types/athlete";
 
@@ -16,17 +16,7 @@ function AthletesProvider({ children }: any) {
     const { isAuthenticated, loading } = useAuth();
 
 
-    const createAthlete = async (data: AthleteType) => {
-        try {
-            await createAthleteFirebase(data);
-            getAllAthletes();
-
-        } catch (e: any) {
-            throw new Error(e.message)
-        }
-    }
-
-    const getAllAthletes = async () => {
+    const getAllAthletes = useCallback(async () => {
         try {
             const athletesFirebase = await getAllAthletesFirebase();
             if (athletesFirebase) setAthletes(athletesFirebase);
@@ -34,12 +24,22 @@ function AthletesProvider({ children }: any) {
             throw new Error(e.message)
         }
 
+    }, [])
+
+    const createAthlete = async (data: AthleteType) => {
+        try {
+            await createAthleteFirebase(data);
+            await getAllAthletes();
+
+        } catch (e: any) {
+            throw new Error(e.message)
+        }
     }
 
     const editAthlete = async (data: AthleteType, id: string) => {
         try {
            await editAthleteFirebase(data, id);
-            getAllAthletes();
+            await getAllAthletes();
         } catch (e: any) {
             throw new Error(e.message)
         }
@@ -83,4 +83,4 @@ function AthletesProvider({ children }: any) {
 
 const useAthletesContext = () => useContext(AthletesContex);
 
-export { AthletesProvider, useAthletesContext }   
+export { AthletesProvider, useAthletesContext }

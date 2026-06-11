@@ -45,11 +45,20 @@ const DateInput = forwardRef<View, Props>(({
       onChange,
       mode: currentMode,
       is24Hour: true,
+      minimumDate,
+      maximumDate,
     });
   };
 
   const showDatepicker = () => {
-    showMode('date');
+    if (!editable) return;
+
+    if (Platform.OS === "android") {
+      showMode('date');
+      return;
+    }
+
+    setShow(true);
   };
 
 
@@ -58,13 +67,16 @@ const DateInput = forwardRef<View, Props>(({
       <Text variant="label">{label}</Text>
       <Pressable
         ref={ref}
+        accessibilityRole="button"
+        accessibilityLabel={label}
+        accessibilityState={{ disabled: !editable }}
         onPress={showDatepicker}
         style={[
           styles.input,
           {
             backgroundColor,
             borderColor: borderColorMap[status],
-            opacity: editable ? 0.7 : 1,
+            opacity: editable ? 1 : 0.55,
           },
         ]}
       >
@@ -78,7 +90,10 @@ const DateInput = forwardRef<View, Props>(({
         <DateTimePicker
           value={value}
           mode="date"
-          onChange={onChange}
+          onChange={(event, selectedDate) => {
+            setShow(false);
+            onChange?.(event, selectedDate);
+          }}
           display={Platform.OS === "ios" ? "spinner" : "inline"}
           minimumDate={minimumDate}
           maximumDate={maximumDate}
@@ -98,7 +113,7 @@ const styles = StyleSheet.create({
     width: "100%",
     height: 48,
     paddingHorizontal: 16,
-    borderRadius: 24,
+    borderRadius: 14,
     borderWidth: 1.5,
     flexDirection: "row",
     alignItems: "center",

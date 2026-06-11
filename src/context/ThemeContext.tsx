@@ -3,6 +3,8 @@ import * as SecureStore from 'expo-secure-store';
 import { ThemeContextType } from "@/types/theme";
 import { customDarkTheme, customLightTheme } from "@/constants/colors";
 
+type ThemeName = 'light' | 'dark';
+
 const ThemeContext = React.createContext<ThemeContextType>({
     theme: 'light',
     toggleTheme: () => {},
@@ -10,13 +12,13 @@ const ThemeContext = React.createContext<ThemeContextType>({
 });
 
 function ThemeProvider({ children }: any) {
-    const [theme, setTheme] = React.useState('light');
+    const [theme, setTheme] = React.useState<ThemeName>('light');
 
     const getTheme = async () => {
-        const theme = await SecureStore.getItemAsync('@efne-theme');
+        const storedTheme = await SecureStore.getItemAsync('@efne-theme');
 
-        if(theme) { 
-            setTheme(theme);
+        if(storedTheme === 'light' || storedTheme === 'dark') {
+            setTheme(storedTheme);
         }
     };
 
@@ -25,8 +27,9 @@ function ThemeProvider({ children }: any) {
     }, []);
 
     const toggleTheme = async () => {
-        setTheme(theme === 'light' ? 'dark' : 'light');
-        await SecureStore.setItemAsync('@efne-theme', theme);
+        const nextTheme = theme === 'light' ? 'dark' : 'light';
+        setTheme(nextTheme);
+        await SecureStore.setItemAsync('@efne-theme', nextTheme);
     };
 
     const getDefaultColors = () => {

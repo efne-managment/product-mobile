@@ -5,6 +5,9 @@ import { CategoriesProvider } from './src/context/CategoriesContext';
 import { FrequenciesProvider } from './src/context/FrequenciesContext';
 import { AuthProvider } from './src/context/AuthContext';
 import { ThemeProvider } from './src/context/ThemeContext';
+import { SettingsProvider } from './src/context/SettingsContext';
+import { FinancialProvider } from './src/context/FinancialContext';
+import { CategoryLineupsProvider } from './src/context/CategoryLineupsContext';
 import AppNavigation from './src/navigation/AppNavigaton';
 
 function App() {
@@ -12,17 +15,23 @@ function App() {
   return (
     <GestureHandlerRootView>
       <ThemeProvider>
-        <AuthProvider>
-          <FrequenciesProvider>
-          <CategoriesProvider>
-            <AthletesProvider>
-                <NavigationContainer>
-                  <AppNavigation />
-                </NavigationContainer>
-            </AthletesProvider>
-          </CategoriesProvider>
-          </FrequenciesProvider>
-        </AuthProvider>
+        <SettingsProvider>
+          <AuthProvider>
+            <FrequenciesProvider>
+              <FinancialProvider>
+                <CategoriesProvider>
+                  <CategoryLineupsProvider>
+                    <AthletesProvider>
+                      <NavigationContainer>
+                        <AppNavigation />
+                      </NavigationContainer>
+                    </AthletesProvider>
+                  </CategoryLineupsProvider>
+                </CategoriesProvider>
+              </FinancialProvider>
+            </FrequenciesProvider>
+          </AuthProvider>
+        </SettingsProvider>
       </ThemeProvider>
     </GestureHandlerRootView>
   );

@@ -26,6 +26,7 @@ export type AthleteType = {
     gender: "feminino" | "masculino" | "outro" | "",
     height: string,
     weight: string,
+    jerseyNumber?: string,
     position: string,
     status: "matriculado" | "ativo" | "inativo",
     father: string,

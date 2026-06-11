@@ -35,6 +35,7 @@ const Select = forwardRef<View, Props>(({ options, value, editable = true, onSel
     const [visible, setVisible] = React.useState(false);
 
     const selectedLabel = options.find((opt) => opt.value === value)?.label || placeholder;
+    const isDisabled = Boolean(disabled || !editable);
 
     const backgroundColor = colors.inputBackground;
 
@@ -49,15 +50,18 @@ const Select = forwardRef<View, Props>(({ options, value, editable = true, onSel
             <Text variant="label" style={{ marginBottom: 4, color: colors.text }}>{label}</Text>
             <Pressable
                 ref={ref}
-                onPress={!disabled ? () => setVisible(true) : undefined}
+                accessibilityRole="button"
+                accessibilityLabel={label}
+                accessibilityState={{ disabled: isDisabled, expanded: visible }}
+                onPress={!isDisabled ? () => setVisible(true) : undefined}
                 style={[
                     styles.input,
                     {
-                        backgroundColor: disabled
+                        backgroundColor: isDisabled
                             ? colors.grayMedium
                             : backgroundColor,
                         borderColor: borderColorMap[status],
-                        opacity: disabled  || editable ? 0.7 : 1,
+                        opacity: isDisabled ? 0.55 : 1,
                     },
                 ]}
             >
@@ -76,6 +80,8 @@ const Select = forwardRef<View, Props>(({ options, value, editable = true, onSel
                         contentContainerStyle={[styles.modal, { backgroundColor: backgroundColor }]}
                         renderItem={({ item }) => (
                             <Pressable
+                                accessibilityRole="button"
+                                accessibilityLabel={`Selecionar ${item.label}`}
                                 style={styles.option}
                                 onPress={() => {
                                     onSelect(item.value);
@@ -100,7 +106,7 @@ const styles = StyleSheet.create({
         width: "100%",
         height: 48,
         paddingHorizontal: 16,
-        borderRadius: 24,
+        borderRadius: 14,
         borderWidth: 1.5,
         flexDirection: "row",
         alignItems: "center",

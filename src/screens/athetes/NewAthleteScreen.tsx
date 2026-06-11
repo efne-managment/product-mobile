@@ -2,8 +2,8 @@ import { RoutesParamList } from "@/navigation/AppNavigaton";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { useState } from "react";
 import { ToastAndroid } from "react-native";
-import { initialValuesAthlete } from "@/constants/defaultValues";
 import { useAthletesContext } from "@/context/AthletesContext";
+import { useSettingsContext } from "@/context/SettingsContext";
 import { useNavigation } from "@react-navigation/native";
 import styles from "./styles";
 import { useCategoriesContext } from "@/context/CategoriesContext";
@@ -16,6 +16,7 @@ type ScreenNavigationProp = NativeStackNavigationProp<RoutesParamList, "NewAthle
 export default function NewAthleteScreen() {
   const navigation = useNavigation<ScreenNavigationProp>();
   const { createAthlete } = useAthletesContext();
+  const { getInitialAthleteValues } = useSettingsContext();
 
   const [loading, setLoading] = useState(false);
  
@@ -53,6 +54,6 @@ export default function NewAthleteScreen() {
     }
   };
 
-    return <AthleteForm handleSubmit={handleSubmit} initialValues={initialValuesAthlete} loading={loading} categories={categories} mode="create" />
+    return <AthleteForm handleSubmit={handleSubmit} initialValues={getInitialAthleteValues()} loading={loading} categories={categories} mode="create" />
 
 }

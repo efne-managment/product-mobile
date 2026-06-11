@@ -43,24 +43,24 @@ export default function ListScreen({ callCard, data, nextRoute }: Props) {
             case "ATHLETE":
                 return <FlatList
                     data={data}
-                    keyExtractor={(item, index) => index.toLocaleString()}
+                    keyExtractor={(item, index) => item.id ?? `athlete-${index}`}
                     renderItem={({ item }) => (<AthleteCard data={item} />)} 
-                    contentContainerStyle={{ flexGrow: 1 }} 
+                    contentContainerStyle={styles.listContent}
                     style={{ width: "100%", }} />;
             case "CATEGORY":
                 return <FlatList
                 data={data}
-                keyExtractor={(item, index) => index.toLocaleString()}
+                keyExtractor={(item, index) => item.id ?? `category-${index}`}
                 renderItem={({ item }) => (<CategoryCard data={item} />)} 
-                contentContainerStyle={{ flexGrow: 1}} 
+                contentContainerStyle={styles.listContent}
                 style={{ width: "100%"}} />;
 
             case "FREQUENCY":
                 return <FlatList
                 data={data}
-                keyExtractor={(item, index) => index.toLocaleString()}
+                keyExtractor={(item, index) => item.id ?? `frequency-${index}`}
                 renderItem={({ item }) => (<FrequencyCard data={item} />)} 
-                contentContainerStyle={{ flexGrow: 1}} 
+                contentContainerStyle={styles.listContent}
                 style={{ width: "100%"}} />;
             default:
                 return <></>;
@@ -80,10 +80,14 @@ export default function ListScreen({ callCard, data, nextRoute }: Props) {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        flexDirection: 'row',
         justifyContent: 'center',
-        alignItems: 'baseline',
-        paddingHorizontal: 10,
+        alignItems: 'center',
+        paddingHorizontal: 16,
+    },
+    listContent: {
+        flexGrow: 1,
+        paddingTop: 12,
+        paddingBottom: 120,
     },
     text: {
         fontSize: 18,

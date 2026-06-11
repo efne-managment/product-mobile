@@ -11,21 +11,20 @@ import {
 } from "react-native";
 import { Formik } from "formik";
 import {
-  fullMaxDate,
-  fullMinDate,
   genderValues,
   positions,
   shifts,
   statusValues,
   years,
 } from "@/constants/defaultValues";
-import saveAthleteSchema from "@/validators/saveAthleteSchema";
+import { createSaveAthleteSchema } from "@/validators/saveAthleteSchema";
 import { useNavigation } from "@react-navigation/native";
 import styles from "./styles";
-import { useRef } from "react";
+import { useMemo, useRef } from "react";
 import { TouchableWithoutFeedback } from "react-native-gesture-handler";
 import { Image } from "expo-image";
 import * as ImagePicker from "expo-image-picker";
+import Octicons from "@expo/vector-icons/Octicons";
 import { AthleteType } from "@/types/athlete";
 import {
   Button,
@@ -38,7 +37,8 @@ import {
   DateInput,
 } from "@/components";
 import { CategoryType } from "@/types/category";
-import { DateTimePickerEvent } from "@react-native-community/datetimepicker";
+import { useThemeContext } from "@/context/ThemeContext";
+import { useSettingsContext } from "@/context/SettingsContext";
 
 type Props = {
   initialValues: AthleteType;
@@ -58,6 +58,21 @@ export default function AthleteForm({
   mode,
 }: Props) {
   const navigation = useNavigation<ScreenNavigationProp>();
+  const { getDefaultColors } = useThemeContext();
+  const { colors } = getDefaultColors();
+  const { getAthleteBirthDateRange, settings } = useSettingsContext();
+  const { fullMinDate, fullMaxDate, minBirthYear, maxBirthYear } =
+    getAthleteBirthDateRange();
+  const validationSchema = useMemo(
+    () =>
+      createSaveAthleteSchema({
+        minBirthYear,
+        maxBirthYear,
+        minAge: settings.minAge,
+        maxAge: settings.maxAge,
+      }),
+    [maxBirthYear, minBirthYear, settings.maxAge, settings.minAge],
+  );
 
   const photoRef = useRef<View>(null);
   const nameRef = useRef<TextInput>(null);
@@ -70,6 +85,7 @@ export default function AthleteForm({
 
   // athlete data
   const positionRef = useRef<View>(null);
+  const jerseyNumberRef = useRef<TextInput>(null);
   const weightRef = useRef<TextInput>(null);
   const heightRef = useRef<TextInput>(null);
   const categoriesRef = useRef<View>(null);
@@ -101,6 +117,7 @@ export default function AthleteForm({
     status: statusRef,
     aditionalInformation: aditionalInformationRef,
     position: positionRef,
+    jerseyNumber: jerseyNumberRef,
     weight: weightRef,
     height: heightRef,
     category: categoriesRef,
@@ -155,19 +172,19 @@ export default function AthleteForm({
 
   return (
     <KeyboardAvoidingView
-      style={{ flex: 1 }}
+      style={{ flex: 1, backgroundColor: colors.background }}
       behavior={Platform.OS === "ios" ? "padding" : "height"}
       keyboardVerticalOffset={64} // ajuste conforme seu header
     >
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <ScrollView
           ref={scrollRef}
-          contentContainerStyle={{ flexGrow: 1, padding: 1 }}
+          contentContainerStyle={styles.formScrollContent}
           keyboardShouldPersistTaps="handled"
         >
           <Formik
             initialValues={initialValues}
-            validationSchema={saveAthleteSchema}
+            validationSchema={validationSchema}
             enableReinitialize={true}
             validateOnMount={true}
             validateOnBlur={true}
@@ -195,84 +212,95 @@ export default function AthleteForm({
             }) => (
               <Layout style={styles.container}>
                 <View
-                  style={styles.containerImg}
+                  style={[styles.formHero, { backgroundColor: colors.card, borderColor: colors.border }]}
                   ref={fieldRefs["photo"]}
                   id="photo_id"
                 >
+                  <View style={[styles.formHeroIcon, { backgroundColor: colors.primaryLight }]}>
+                    <Octicons name="person" size={22} color={colors.primary} />
+                  </View>
                   <Image
                     source={
                       values.photo
                         ? { uri: values.photo }
                         : require("../../../assets/person_default.jpg")
                     }
-                    style={styles.image}
+                    style={styles.formHeroImage}
                   />
+                  <View style={styles.formHeroContent}>
+                    <Text variant="h5">
+                      {mode === "create" ? "Novo atleta" : "Editar atleta"}
+                    </Text>
+                    <Text variant="label" style={{ color: colors.mutedText }}>
+                      Complete os dados para manter a ficha esportiva atualizada.
+                    </Text>
+                    {errors.photo && <Text status="danger">{errors.photo}</Text>}
+                    <Button
+                      title={values.photo ? "Trocar foto" : "Adicionar foto"}
+                      status="success"
+                      size="full"
+                      onPress={() => {
+                        Alert.alert(
+                          "Selecionar imagem",
+                          "Escolha a origem da foto:",
+                          [
+                            {
+                              text: "Câmera",
+                              onPress: async () => {
+                                const cameraPermission =
+                                  await ImagePicker.requestCameraPermissionsAsync();
+                                if (!cameraPermission.granted) {
+                                  Alert.alert(
+                                    "Permissão necessária",
+                                    "Permita o uso da câmera para continuar."
+                                  );
+                                  return;
+                                }
+
+                                const result = await ImagePicker.launchCameraAsync({
+                                  mediaTypes: ["images"],
+                                  allowsEditing: true,
+                                  quality: 0.7,
+                                });
+
+                                if (!result.canceled) {
+                                  setFieldValue("photo", result.assets[0].uri);
+                                }
+                              },
+                            },
+                            {
+                              text: "Galeria",
+                              onPress: async () => {
+                                const galleryPermission =
+                                  await ImagePicker.requestMediaLibraryPermissionsAsync();
+                                if (!galleryPermission.granted) {
+                                  Alert.alert(
+                                    "Permissão necessária",
+                                    "Permita o acesso à galeria para continuar."
+                                  );
+                                  return;
+                                }
+
+                                const result =
+                                  await ImagePicker.launchImageLibraryAsync({
+                                    mediaTypes: ["images"],
+                                    allowsEditing: true,
+                                    quality: 0.7,
+                                  });
+
+                                if (!result.canceled) {
+                                  setFieldValue("photo", result.assets[0].uri);
+                                }
+                              },
+                            },
+                            { text: "Cancelar", style: "cancel" },
+                          ],
+                          { cancelable: true }
+                        );
+                      }}
+                    />
+                  </View>
                 </View>
-                {errors.photo && <Text status="danger">{errors.photo}</Text>}
-                <Button
-                  title="Adicionar foto"
-                  status="success"
-                  size="semi"
-                  onPress={() => {
-                    Alert.alert(
-                      "Selecionar imagem",
-                      "Escolha a origem da foto:",
-                      [
-                        {
-                          text: "Câmera",
-                          onPress: async () => {
-                            const cameraPermission =
-                              await ImagePicker.requestCameraPermissionsAsync();
-                            if (!cameraPermission.granted) {
-                              Alert.alert(
-                                "Permissão necessária",
-                                "Permita o uso da câmera para continuar."
-                              );
-                              return;
-                            }
-
-                            const result = await ImagePicker.launchCameraAsync({
-                              mediaTypes: ["images"],
-                              allowsEditing: true,
-                              quality: 0.7,
-                            });
-
-                            if (!result.canceled) {
-                              setFieldValue("photo", result.assets[0].uri);
-                            }
-                          },
-                        },
-                        {
-                          text: "Galeria",
-                          onPress: async () => {
-                            const galleryPermission =
-                              await ImagePicker.requestMediaLibraryPermissionsAsync();
-                            if (!galleryPermission.granted) {
-                              Alert.alert(
-                                "Permissão necessária",
-                                "Permita o acesso à galeria para continuar."
-                              );
-                              return;
-                            }
-
-                            const result =
-                              await ImagePicker.launchImageLibraryAsync({
-                                mediaTypes: ["images"],
-                                allowsEditing: true,
-                                quality: 0.7,
-                              });
-
-                            if (!result.canceled) {
-                              setFieldValue("photo", result.assets[0].uri);
-                            }
-                          },
-                        },
-                        { text: "Cancelar", style: "cancel" },
-                      ],
-                      { cancelable: true }
-                    );
-                  }}
-                />
 
                 <SectionDivider title="Dados pessoais" key="personal_data" />
 
@@ -498,14 +526,45 @@ export default function AthleteForm({
                     }
                     onSelect={(selected) => {
                       setFieldValue("position", selected);
-                      if (weightRef.current) {
-                        weightRef.current.focus();
+                      if (jerseyNumberRef.current) {
+                        jerseyNumberRef.current.focus();
                       }
                     }}
                   />
                   {errors.position ? (
                     <Text variant="labelBold" status="danger">
                       {errors.position}
+                    </Text>
+                  ) : null}
+                </Layout>
+
+                <Layout style={styles.containerInput}>
+                  <Input
+                    label="Número da camisa"
+                    ref={jerseyNumberRef}
+                    returnKeyType="next"
+                    onSubmitEditing={() => {
+                      if (weightRef.current) {
+                        weightRef.current.focus();
+                      }
+                    }}
+                    autoCapitalize="none"
+                    autoCorrect={false}
+                    autoComplete="off"
+                    keyboardType="number-pad"
+                    value={values.jerseyNumber || ""}
+                    onChangeText={handleChange("jerseyNumber")}
+                    status={
+                      errors.jerseyNumber
+                        ? "danger"
+                        : touched.jerseyNumber
+                        ? "success"
+                        : "default"
+                    }
+                  />
+                  {errors.jerseyNumber ? (
+                    <Text variant="labelBold" status="danger">
+                      {errors.jerseyNumber}
                     </Text>
                   ) : null}
                 </Layout>

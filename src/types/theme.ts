@@ -10,6 +10,10 @@ export type ThemeColors = {
 
     warning: string;
     warningLight: string;
+    secondary: string;
+    secondaryLight: string;
+    accent: string;
+    accentLight: string;
 
     grayLight: string;
     grayDark: string;
@@ -28,6 +32,10 @@ export type ThemeColors = {
   placeholderColor: string; 
   modalBackground: string;  
   background: string;  
+  card: string;
+  border: string;
+  mutedText: string;
+  surfaceAlt: string;
 };
 
 export type ThemeObject = {

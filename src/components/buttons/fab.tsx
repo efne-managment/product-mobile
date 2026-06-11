@@ -22,14 +22,16 @@ export default function FAB({ iconName, status = "primary", location = "bottom-r
   };
 
   const positionStyles: Record<string, object> = {
-    "bottom-right": { bottom: 30, right: 10 },
-    "bottom-left": { bottom: 30, left: 10 },
+    "bottom-right": { bottom: 92, right: 18 },
+    "bottom-left": { bottom: 92, left: 18 },
     "top-right": { top: 30, right: 10 },
     "top-left": { top: 30, left: 10 },
   };
 
   return (
     <Pressable {...rest}
+      accessibilityRole="button"
+      accessibilityLabel={rest.accessibilityLabel ?? "Adicionar"}
       style={[
         styles.buttonFAB,
         positionStyles[location],
@@ -51,14 +53,14 @@ const styles = StyleSheet.create({
     zIndex: 1000,
     width: 70,
     height: 70,
-    borderRadius: 35,
+    borderRadius: 24,
     justifyContent: "center",
     alignItems: "center",
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 5,
+    shadowOpacity: 0.18,
+    shadowRadius: 10,
+    elevation: 6,
   },
   icon: {
     width: 32,

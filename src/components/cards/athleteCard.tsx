@@ -1,15 +1,15 @@
 import { RoutesParamList } from "@/navigation/AppNavigaton";
-import ModalOpenPhoto from "@/components/modals/modalOpenPhoto";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { Image } from "expo-image";
 import React from "react";
-import { Pressable, StyleSheet } from "react-native";
+import { Pressable, StyleSheet, View } from "react-native";
 import { AthleteType } from "@/types/athlete";
 import { Layout } from "../views";
 import { Text } from "../texts";
-import { Button } from "../buttons";
 import { serializeAthlete } from "@/utils/serializesParams";
+import { useThemeContext } from "@/context/ThemeContext";
+import Octicons from "@expo/vector-icons/Octicons";
 
 type Props = {
   data: AthleteType;
@@ -19,97 +19,129 @@ type ListScreensProp = NativeStackNavigationProp<RoutesParamList>;
 
 export default function AthleteCard({ data }: Props) {
   const navigation = useNavigation<ListScreensProp>();
-  const [visibleModal, setVisibleModal] = React.useState(false);
+  const { getDefaultColors } = useThemeContext();
+  const { colors } = getDefaultColors();
   const uriImage = data?.photo
     ? { uri: data.photo }
     : require("../../../assets/person_default.jpg");
   const age = calculateAge(data.born);
+  const isActive = data.status === "matriculado" || data.status === "ativo";
 
   return (
-    <Layout style={styles.container}>
-      <Layout style={styles.containerLeft}>
-        <Pressable
-          style={styles.image}
-          onPress={() => {
-            if (data.photo) setVisibleModal(true);
-          }}
-        >
+    <Pressable
+      accessibilityRole="button"
+      accessibilityLabel={`Ver detalhes de ${data.name}`}
+      onPress={() =>
+        navigation.navigate("DetailsAthlete", {
+          athlete: serializeAthlete(data),
+          age: age,
+        })
+      }
+      style={[styles.container, { backgroundColor: colors.card, borderColor: colors.border }]}
+    >
+      <View style={styles.avatarWrap}>
+        {data.photo ? (
           <Image style={styles.image} source={uriImage} />
-        </Pressable>
-      </Layout>
-      <Layout style={styles.containerRight}>
-        <Text variant="h5" style={{ width: "100%" }}>
-          {data.name}
-        </Text>
-        <Text variant="h5" style={{ width: "100%" }}>Idade: {age} anos</Text>
-        <Layout style={{ flexDirection: "row", gap: 10 }}>
-        <Text variant="h6" style={{ width: "100%" }}>{data.position}</Text>
-        <Text variant="h6" status={data.status === "matriculado" ? "success" : data.status === 'ativo' ? "default" : "danger"} style={{ width: "100%" }}>{data.status}</Text>
+        ) : (
+          <View style={[styles.initialsAvatar, { backgroundColor: colors.primary }]}>
+            <Text variant="labelBold" style={styles.initialsText}>
+              {getInitials(data.name)}
+            </Text>
+          </View>
+        )}
+        <View style={[styles.ageBadge, { backgroundColor: colors.accent }]}>
+          <Text variant="labelBold" style={{ color: colors.grayDarkest, fontSize: 11 }}>
+            {age}
+          </Text>
+        </View>
+      </View>
 
-        </Layout>
-        <Button
-          title="Ver mais"
-          size="small"
-          style={{ width: "100%" }}
-          onPress={() =>
-            navigation.navigate("DetailsAthlete", {
-              athlete: serializeAthlete(data),
-              age: age,
-            })
-          }
-        />
+      <Layout style={styles.content}>
+        <View style={styles.nameRow}>
+          <Text variant="labelBold" numberOfLines={1} style={{ flex: 1 }}>
+            {data.name}
+          </Text>
+          <Octicons name={isActive ? "check-circle" : "clock"} size={16} color={isActive ? colors.secondary : colors.warning} />
+        </View>
+        <Text variant="label" numberOfLines={1} style={{ color: colors.mutedText }}>
+          {data.position || "Posição não informada"} • {data.status}
+        </Text>
       </Layout>
-      <ModalOpenPhoto
-        setVisible={setVisibleModal}
-        visible={visibleModal}
-        uri={data.photo || ""}
-      />
-    </Layout>
+      <Octicons name="chevron-right" size={19} color={colors.mutedText} />
+    </Pressable>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flexDirection: "row",
-    width: "95%",
-    height: "auto",
-    marginLeft: 10,
+    width: "100%",
+    minHeight: 76,
     alignItems: "center",
-    paddingVertical: 10,
-    paddingHorizontal: 20,
+    paddingVertical: 12,
+    paddingHorizontal: 12,
     shadowColor: "#000",
-    borderWidth: 0,
+    borderWidth: 1,
     shadowOffset: {
       width: 0,
-      height: 2,
+      height: 1,
     },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 8,
-    marginVertical: 10,
-    borderRadius: 15,
+    shadowOpacity: 0.06,
+    shadowRadius: 8,
+    elevation: 2,
+    marginVertical: 6,
+    borderRadius: 16,
+    gap: 12,
   },
-  containerLeft: {
-    marginRight: 10,
-    alignItems: "center",
-    justifyContent: "center",
-    width: 100,
+  avatarWrap: {
+    width: 52,
+    height: 52,
   },
-  containerRight: {
-    marginLeft: 10,
-    height: "100%",
+  content: {
     flex: 1,
-    flexDirection: "column",
-    alignItems: "baseline",
-    gap: 10
+    gap: 4,
+    backgroundColor: "transparent",
+  },
+  nameRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 8,
   },
   image: {
-    width: "100%",
-    height: 100,
-    borderRadius: 100,
+    width: 52,
+    height: 52,
+    borderRadius: 26,
     objectFit: "cover",
   },
+  initialsAvatar: {
+    width: 52,
+    height: 52,
+    borderRadius: 26,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  initialsText: {
+    color: "#FFFFFF",
+  },
+  ageBadge: {
+    position: "absolute",
+    right: -4,
+    bottom: -4,
+    minWidth: 24,
+    height: 24,
+    borderRadius: 12,
+    alignItems: "center",
+    justifyContent: "center",
+    borderWidth: 2,
+    borderColor: "#FFFFFF",
+  },
 });
+
+function getInitials(value: string) {
+  const parts = value.trim().split(/\s+/).filter(Boolean);
+  if (!parts.length) return "AT";
+  return parts.slice(0, 2).map((part) => part[0]).join("").toUpperCase();
+}
 
 function calculateAge(born: Date): number {
   // Obter a data atual

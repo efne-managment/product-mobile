@@ -6,6 +6,11 @@ import { CategoryType } from "@/types/category";
 
 const dbName = "Categories"
 
+function sanitizeCategoryData(data: CategoryType) {
+    const { lineup, ...categoryData } = data;
+    return categoryData;
+}
+
 export async function getAllCategoriesFirebase() {
     const currentUser = getCurrentUser();
 
@@ -36,8 +41,9 @@ export async function getAllCategoriesFirebase() {
 
 export async function createCategoryFirebase(data: CategoryType) {
     try {
+        const categoryData = sanitizeCategoryData(data);
         const docRef = await addDoc(collection(db, dbName), {
-            ...data,
+            ...categoryData,
             createdAt: serverTimestamp(),
         });
 
@@ -55,6 +61,7 @@ export async function createCategoryFirebase(data: CategoryType) {
 
 export async function deleteCategoryFirebase(id: string) {
     try {
+        await deleteDoc(doc(db, dbName, id, "Lineups", "current")).catch(() => undefined);
         await deleteDoc(doc(db, dbName, id));
     } catch (e: any) {
         throw new Error(e.message)
@@ -79,9 +86,10 @@ export async function getCategoryFirebase(id: string) {
 
 export async function editCategoryFirebase(data: CategoryType, id: string) {
     try {
+        const categoryData = sanitizeCategoryData(data);
 
         await setDoc(doc(db, dbName, id), {
-            ...data,
+            ...categoryData,
             updatedAt: Date.now().toLocaleString("pt-BR")
         });
         

@@ -4,24 +4,24 @@ const styles = StyleSheet.create({
   screen: {
     flex: 1,
   },
-  container: {
-    flex: 1,
+  content: {
+    paddingHorizontal: 16,
+    paddingTop: 16,
+    paddingBottom: 126,
   },
   formScrollContent: {
     flexGrow: 1,
     paddingHorizontal: 16,
     paddingTop: 16,
-    paddingBottom: 110,
+    paddingBottom: 112,
   },
-  formHero: {
+  hero: {
     width: "100%",
-    minHeight: 128,
+    minHeight: 142,
     borderWidth: 1,
     borderRadius: 18,
-    padding: 14,
+    padding: 16,
     marginBottom: 14,
-    flexDirection: "row",
-    alignItems: "center",
     gap: 14,
     shadowColor: "#000",
     shadowOffset: {
@@ -32,24 +32,39 @@ const styles = StyleSheet.create({
     shadowRadius: 8,
     elevation: 2,
   },
-  formHeroIcon: {
-    width: 54,
-    height: 54,
-    borderRadius: 18,
+  heroHeader: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 12,
+  },
+  heroIcon: {
+    width: 52,
+    height: 52,
+    borderRadius: 17,
     alignItems: "center",
     justifyContent: "center",
   },
-  formHeroContent: {
+  heroText: {
     flex: 1,
-    gap: 6,
+    gap: 4,
   },
-  counterBadge: {
-    minWidth: 58,
+  balanceText: {
+    fontSize: 30,
+    fontWeight: "800",
+  },
+  metricsRow: {
+    flexDirection: "row",
+    gap: 10,
+    marginBottom: 14,
+  },
+  metricCard: {
+    flex: 1,
+    minHeight: 92,
+    borderWidth: 1,
     borderRadius: 16,
-    paddingHorizontal: 10,
-    paddingVertical: 8,
-    alignItems: "center",
+    padding: 10,
     justifyContent: "center",
+    gap: 5,
   },
   card: {
     width: "100%",
@@ -66,11 +81,29 @@ const styles = StyleSheet.create({
     shadowRadius: 8,
     elevation: 2,
   },
+  pendingList: {
+    gap: 8,
+  },
+  pendingRow: {
+    minHeight: 58,
+    borderWidth: 1,
+    borderRadius: 14,
+    paddingHorizontal: 12,
+    paddingVertical: 9,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    gap: 12,
+  },
+  pendingInfo: {
+    flex: 1,
+    gap: 3,
+  },
   cardHeader: {
     flexDirection: "row",
     alignItems: "center",
     gap: 10,
-    marginBottom: 10,
+    marginBottom: 8,
   },
   cardIcon: {
     width: 34,
@@ -80,48 +113,35 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   containerInput: {
-    marginVertical: 7,
+    marginTop: 12,
     width: "100%",
     backgroundColor: "transparent",
   },
-  button: {
-    width: "100%",
-  },
-  trainingList: {
-    gap: 10,
-  },
-  lineupList: {
+  referenceBox: {
     marginTop: 12,
-    gap: 6,
-  },
-  trainingItem: {
-    minHeight: 72,
-    borderWidth: 1,
-    borderRadius: 16,
-    padding: 12,
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 10,
-  },
-  trainingIcon: {
-    width: 38,
-    height: 38,
     borderRadius: 14,
-    alignItems: "center",
-    justifyContent: "center",
-    backgroundColor: "rgba(255,255,255,0.55)",
+    padding: 12,
+    gap: 4,
   },
-  trainingInfo: {
-    flex: 1,
-    gap: 3,
-  },
-  trainingActions: {
+  inlineFields: {
     flexDirection: "row",
-    gap: 8,
+    gap: 12,
   },
-  emptyBox: {
-    borderRadius: 16,
-    padding: 14,
+  inlineField: {
+    flex: 1,
+  },
+  sectionTitleRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    marginBottom: 6,
+  },
+  emptyCard: {
+    borderWidth: 1,
+    borderRadius: 18,
+    padding: 18,
+    alignItems: "center",
+    gap: 8,
   },
   footerActions: {
     position: "absolute",
@@ -137,12 +157,23 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     gap: 12,
   },
-  row: {
-    width: "100%",
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
+  detailRow: {
     paddingVertical: 10,
+    borderBottomWidth: StyleSheet.hairlineWidth,
+    gap: 4,
+  },
+  detailValue: {
+    width: "100%",
+  },
+  pillRow: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    gap: 8,
+  },
+  pill: {
+    borderRadius: 999,
+    paddingHorizontal: 10,
+    paddingVertical: 5,
   },
 });
 

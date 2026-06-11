@@ -5,7 +5,7 @@ import {
   getAllCategoriesFirebase,
   getCategoryFirebase,
 } from "@/firebase/categories";
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useCallback, useContext, useEffect, useState } from "react";
 import { useAuth } from "./AuthContext";
 import { CategoriesContextType, CategoryType } from "@/types/category";
 
@@ -22,7 +22,7 @@ function CategoriesProvider({ children }: any) {
   const [categories, setCategories] = useState<CategoryType[]>([]);
   const { isAuthenticated, loading } = useAuth();
 
-  const getAllCategories = async () => {
+  const getAllCategories = useCallback(async () => {
     try {
       const categoriesFirebase = await getAllCategoriesFirebase();
       if (categoriesFirebase) {
@@ -31,7 +31,7 @@ function CategoriesProvider({ children }: any) {
     } catch (e: any) {
       throw new Error(e.message);
     }
-  };
+  }, []);
 
   const getOneCategory = async (id: string) => {
     try {
@@ -48,7 +48,7 @@ function CategoriesProvider({ children }: any) {
   const createCategory = async (data: CategoryType) => {
     try {
       await createCategoryFirebase(data);
-      getAllCategories();
+      await getAllCategories();
     } catch (e: any) {
       throw new Error(e.message);
     }
@@ -57,7 +57,7 @@ function CategoriesProvider({ children }: any) {
   const editCategory = async (data: CategoryType, id: string) => {
     try {
       await editCategoryFirebase(data, id);
-      getAllCategories();
+      await getAllCategories();
     } catch (e: any) {
       throw new Error(e.message);
     }
@@ -66,7 +66,7 @@ function CategoriesProvider({ children }: any) {
   const deleteCategory = async (id: string) => {
     try {
       await deleteCategoryFirebase(id);
-      getAllCategories();
+      await getAllCategories();
     } catch (e: any) {
       throw new Error(e.message);
     }
