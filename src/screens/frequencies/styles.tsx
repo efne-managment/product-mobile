@@ -1,87 +1,143 @@
 import { StyleSheet } from "react-native";
 
 const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-        flexDirection: 'column',
-        justifyContent: 'space-between',
-        paddingHorizontal: 22,
-        paddingTop: 48,    
-        height: "100%" 
-    },
-    containerImg:{
-        width: "100%",
-        height: "28%",
-        marginBottom: 30,
-        alignItems: "center",
-        justifyContent: 'flex-start',
-    },
-    containerForm: {
-        width: "100%",
-        height: "auto",
-        justifyContent: "space-around",
-    },
-    containerInput: {
-        marginVertical: 10,
-        width: "100%",
-    },
-    containerFooter: {
-        width: "100%",
-        paddingTop: 15,
-        marginVertical: 10,
-        flexDirection: "row",
-        justifyContent: "space-around",
-        borderTopWidth: 1,
-        borderColor: "#ccc",
-        zIndex: 10,
-        backgroundColor: "white",
-    },
-    containerCheckForgot: {
-      flexDirection: "row",
-      justifyContent: "space-between",
-      height: 50,  
-      marginBottom: 10,
-    },
-    button: {
-        width: "100%",
-    }, 
-    
-  title: {
-    marginBottom: 20,
-  }, 
-    image: {
-        width: 150,
-        height: 123,
-        objectFit: "contain",
-        borderRadius: 25,
-        borderColor: 'black',
-        marginBottom: 15
-    },
-    row: {
-        width: "100%",
-        flexDirection: "row",
-        alignItems: "center",
-        justifyContent: "space-between",
-        paddingVertical: 10,
-    },
-    divider: { 
-        backgroundColor: 'black', 
-        width: '22%',
-        height: 2
-    }, 
-
-  icon: {
-    width: 20   ,
-    height: 25,
+  screen: {
+    flex: 1,
   },
-  buttonFAB: {
+  container: {
+    flex: 1,
+  },
+  formScrollContent: {
+    flexGrow: 1,
+    paddingHorizontal: 16,
+    paddingTop: 16,
+    paddingBottom: 112,
+  },
+  formHero: {
+    width: "100%",
+    minHeight: 128,
+    borderWidth: 1,
+    borderRadius: 18,
+    padding: 14,
+    marginBottom: 14,
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 14,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    shadowOpacity: 0.06,
+    shadowRadius: 8,
+    elevation: 2,
+  },
+  formHeroIcon: {
+    width: 54,
+    height: 54,
+    borderRadius: 18,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  formHeroContent: {
+    flex: 1,
+    gap: 6,
+  },
+  counterBadge: {
+    minWidth: 66,
+    borderRadius: 16,
+    paddingHorizontal: 10,
+    paddingVertical: 8,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  metricsRow: {
+    flexDirection: "row",
+    gap: 10,
+    marginBottom: 14,
+  },
+  metricCard: {
+    flex: 1,
+    minHeight: 86,
+    borderWidth: 1,
+    borderRadius: 16,
+    padding: 10,
+    alignItems: "center",
+    justifyContent: "center",
+    gap: 5,
+  },
+  card: {
+    width: "100%",
+    borderWidth: 1,
+    borderRadius: 18,
+    padding: 14,
+    marginBottom: 14,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    shadowOpacity: 0.05,
+    shadowRadius: 8,
+    elevation: 2,
+  },
+  cardHeader: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 10,
+  },
+  cardHeaderBetween: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    marginBottom: 6,
+  },
+  cardIcon: {
+    width: 34,
+    height: 34,
+    borderRadius: 12,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  presenceBadge: {
+    borderRadius: 999,
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+  },
+  containerInput: {
+    marginTop: 12,
+    width: "100%",
+    backgroundColor: "transparent",
+  },
+  notesInput: {
+    minHeight: 112,
+    paddingTop: 14,
+  },
+  emptyBox: {
+    borderRadius: 16,
+    padding: 14,
+  },
+  footerActions: {
     position: "absolute",
-    bottom: 20,
-    right: 20,
-    width: 70,
-    height: 70,
-    borderRadius: 50,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    minHeight: 92,
+    paddingHorizontal: 16,
+    paddingTop: 12,
+    paddingBottom: 22,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    gap: 12,
+  },
+  row: {
+    width: "100%",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    paddingVertical: 10,
   },
 });
 
-export default styles
+export default styles;

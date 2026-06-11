@@ -16,8 +16,11 @@ export type FrequencyType = {
     },
     date: Date,
     time: string,
+    notes?: string,
     createdAt?: Date,
+    createdBy?: string,
     updatedAt?: Date,
+    updatedBy?: string,
 }
 
 export type FrequencyFormType = {
@@ -25,6 +28,7 @@ export type FrequencyFormType = {
     category: string,
     date: Date
     time: string
+    notes: string
 }
 
 export type FrequenciesContextType = {

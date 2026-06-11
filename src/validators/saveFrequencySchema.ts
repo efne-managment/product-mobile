@@ -13,4 +13,5 @@ export const saveFrequencySchema = Yup.object().shape({
   ).min(1, 'Pelo menos um atleta deve ser adicionado'),
   category: Yup.string().required('Categoria é obrigatória'),
   time: Yup.string().required('Horário é obrigatório'),
-}); 
+  notes: Yup.string().max(1000, 'Observações devem ter no máximo 1000 caracteres'),
+});

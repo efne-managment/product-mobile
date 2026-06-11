@@ -66,7 +66,15 @@ export default function EditFrequencyScreen() {
     try {
       await editFrequency(values, frequency.id || "");  
       setLoading(false)
-      navigation.replace("DetailsFrequency", { frequency: serializeFrequency(values) });
+      navigation.replace("DetailsFrequency", {
+        frequency: serializeFrequency({
+          ...frequency,
+          ...values,
+          id: frequency.id,
+          createdAt: frequency.createdAt,
+          createdBy: frequency.createdBy,
+        }),
+      });
     } catch (error) {
       console.error('Erro ao salvar os dados:', error);
       setLoading(false)
@@ -78,6 +86,7 @@ export default function EditFrequencyScreen() {
     athletes: frequency.athletes,
     date: frequency.date,
     time: frequency.time,
+    notes: frequency.notes || "",
   }
 
   return (

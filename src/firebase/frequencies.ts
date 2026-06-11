@@ -17,12 +17,21 @@ const db = getFirestore(app);
 
 const dbName = "Frequencies";
 
-export async function getAllFrequenciesFirebase() {
+function getUserDisplayName() {
   const currentUser = getCurrentUser();
 
   if (!currentUser) {
     throw new Error("Usuário não autenticado.");
   }
+
+  return {
+    currentUser,
+    displayName: currentUser.displayName || currentUser.email || currentUser.uid,
+  };
+}
+
+export async function getAllFrequenciesFirebase() {
+  getUserDisplayName();
 
   try {
     const frequenciesCollection = collection(db, dbName);
@@ -49,11 +58,7 @@ export async function getAllFrequenciesFirebase() {
 
 export async function getFrequencyFirebase(id: string) {
   try {
-    const currentUser = getCurrentUser();
-
-  if (!currentUser) {
-    throw new Error("Usuário não autenticado.");
-  }
+    getUserDisplayName();
 
     const docRef = doc(db, dbName, id);
     const docSnap = await getDoc(docRef);
@@ -78,17 +83,13 @@ export async function getFrequencyFirebase(id: string) {
 
 export async function createFrequencyFirebase(data: FrequencyType) {
   try {
-    const currentUser = getCurrentUser();
-
-  if (!currentUser) {
-    throw new Error("Usuário não autenticado.");
-  }
+    const { displayName } = getUserDisplayName();
 
     const docRef = await addDoc(collection(db, dbName), {
       ...data,
       date: new Date(data.date),
       createdAt: serverTimestamp(),
-      createdBy: currentUser.displayName || currentUser.email,
+      createdBy: displayName,
     });
 
     const docSnap = await getDoc(docRef);
@@ -104,16 +105,17 @@ export async function createFrequencyFirebase(data: FrequencyType) {
 
 export async function editFrequencyFirebase(data: FrequencyType, id: string) {
   try {
-    const currentUser = getCurrentUser();
+    const { displayName } = getUserDisplayName();
 
-  if (!currentUser) {
-    throw new Error("Usuário não autenticado.");
-  }
-    await setDoc(doc(db, dbName, id), {
-      ...data,
-      updatedAt: serverTimestamp(),
-      updatedBy: currentUser.displayName || currentUser.email,
-    });
+    await setDoc(
+      doc(db, dbName, id),
+      {
+        ...data,
+        updatedAt: serverTimestamp(),
+        updatedBy: displayName,
+      },
+      { merge: true },
+    );
   } catch (e: any) {
     throw new Error(e.message);
   }
@@ -121,11 +123,7 @@ export async function editFrequencyFirebase(data: FrequencyType, id: string) {
 
 export async function deleteFrequencyFirebase(id: string) {
   try {
-    const currentUser = getCurrentUser();
-
-  if (!currentUser) {
-    throw new Error("Usuário não autenticado.");
-  }
+    getUserDisplayName();
     await deleteDoc(doc(db, dbName, id));
   } catch (e: any) {
     throw new Error(e.message);
