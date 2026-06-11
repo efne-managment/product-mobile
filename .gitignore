@@ -32,7 +32,5 @@ yarn.lock
 # local env files
 .env
 
-package-lock.json
-
 # typescript
 *.tsbuildinfo

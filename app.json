@@ -4,7 +4,7 @@
     "slug": "efne",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/splash_v2.png",
+    "icon": "./assets/app-icon.png",
     "userInterfaceStyle": "light",
     "splash": {
       "image": "./assets/splash.png",
@@ -16,7 +16,7 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/splash_v2.png",
+        "foregroundImage": "./assets/app-icon.png",
         "backgroundColor": "#ffffff"
       },
       "permissions": [
@@ -30,8 +30,7 @@
       "favicon": "./assets/favicon.png",
       "build": {
         "babel": {
-          "include": [
-          ]
+          "include": []
         }
       }
     },
@@ -49,7 +48,9 @@
         }
       ],
       "expo-asset",
-      "expo-secure-store"
+      "expo-secure-store",
+      "@react-native-community/datetimepicker",
+      "expo-font"
     ]
   }
 }
